@@ -3,6 +3,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{a)} Missing: relate cells and pines to nature.
 
+For this task, three sets of real data points are studied. The data is loaded from the course web page.
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.95]{figures/prob1_cells_points.pdf}
@@ -24,7 +26,7 @@
     \label{fig:pines_points}
 \end{figure}
 
-Figures \ref{fig:cells_points}, \ref{fig:redwood_points} and \ref{fig:pines_points} show three different real data point patterns. These patterns have different properties. The pines data points in figure \ref{fig:pines_points} seem to be scattered around at random; some close together and some further away without any particular trend. The redwood data points (figure \ref{fig:redwood_points}) are more clustered. This is actually a known feature for redwood trees, as baby redwoods often grow on top of the roots of their parents to get nutrients (https://www.livescience.com/39461-sequoias-redwood-trees.html). The cells (figure \ref{fig:cells_points}) data on the other hand, show the exact opposite property. The points seem to be spread out to max out the space for each cell points, i.e. there seem to be a repulsive effect.
+Figures \ref{fig:cells_points}, \ref{fig:redwood_points} and \ref{fig:pines_points} show the three different data point patterns. These patterns have different properties. The pines data points in figure \ref{fig:pines_points} seem to be scattered around at random; some close together and some further away without any particular trend. The redwood data points (figure \ref{fig:redwood_points}) are more clustered. This is actually a known feature for redwood trees, as baby redwoods often grow on top of the roots of their parents to get nutrients (https://www.livescience.com/39461-sequoias-redwood-trees.html). The cells (figure \ref{fig:cells_points}) data on the other hand, show the exact opposite property. The points seem to be spread out to max out the space for each cell points, i.e. there seem to be a repulsive effect.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{b)} Missing: getting empirical functions that make any sense++.
@@ -53,6 +55,24 @@ Inserting for $J(t)$ we get that for stationary Poisson RF
 \begin{equation}
     L(t) = t
 \end{equation}
+
+In R, the empirical L-interaction function can be found using the function Kfn() from the library \textit{spatial}. The empirical L-function for the three data sets are shown in figure \ref{fig:L_emp}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.95]{figures/prob1_L_empirical.pdf}
+    \caption{Empirical L-interaction functions for the three data sets.}
+    \label{fig:L_emp}
+\end{figure}
+
+If a stationary Poisson RF is a good model for the data sets, then the empirical L-function should approximately follow $L(t) = t$. In figure \ref{fig:L_emp_theor}, the empirical interactive functions are plotted against $L(t) = t$. 
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.95]{figures/prob1_L_emp_theor.pdf}
+    \caption{Empirical L-interaction functions for the three data sets.}
+    \label{fig:L_emp_theor}
+\end{figure}
 
 (Final conclusion:) It seems that a stationary Poisson model may be suitable for the pine tree data, but not for the two other data sets. The redwood data seem to be clustered and the cells data seem to be repulsive.
 
