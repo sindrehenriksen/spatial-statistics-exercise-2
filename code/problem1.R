@@ -35,9 +35,9 @@ ggplot(data = cells_df, aes(x=x, y=y)) +
   ggtitle("Cells data") +
   theme(plot.title = element_text(hjust = 0.5))
 
-ggsave("../figures/prob1_cells_points.pdf", plot = last_plot(), device = NULL, path = NULL,
-       scale = 1, width = 4, height = 4, units = "in",
-      dpi = 300, limitsize = TRUE)
+#ggsave("../figures/prob1_cells_points.pdf", plot = last_plot(), device = NULL, path = NULL,
+#       scale = 1, width = 4, height = 4, units = "in",
+#      dpi = 300, limitsize = TRUE)
 
 #Display redwood data
 redwood_df = data.frame(x = redwood$x, y = redwood$y)
@@ -47,9 +47,9 @@ ggplot(data = redwood_df, aes(x=x, y=y)) +
   ggtitle("Redwood data") +
   theme(plot.title = element_text(hjust = 0.5))
 
-ggsave("../figures/prob1_redwood_points.pdf", plot = last_plot(), device = NULL, path = NULL,
-       scale = 1, width = 4, height = 4, units = "in",
-       dpi = 300, limitsize = TRUE)
+#ggsave("../figures/prob1_redwood_points.pdf", plot = last_plot(), device = NULL, path = NULL,
+#       scale = 1, width = 4, height = 4, units = "in",
+#      dpi = 300, limitsize = TRUE)
 
 #Display pines data
 pines_df = data.frame(x = pines$x, y = pines$y)
@@ -59,9 +59,9 @@ ggplot(data = pines_df, aes(x=x, y=y)) +
   ggtitle("Pines data") +
   theme(plot.title = element_text(hjust = 0.5))
 
-ggsave("../figures/prob1_pines_points.pdf", plot = last_plot(), device = NULL, path = NULL,
-       scale = 1, width = 4, height = 4, units = "in",
-       dpi = 300, limitsize = TRUE)
+#ggsave("../figures/prob1_pines_points.pdf", plot = last_plot(), device = NULL, path = NULL,
+#       scale = 1, width = 4, height = 4, units = "in",
+#       dpi = 300, limitsize = TRUE)
 
 ###############################################################
 ###############################################################
@@ -71,7 +71,8 @@ L_plot = list()
 
 L_cells = Kfn(cells, fs = 1)
 J_cells = L_cells$y/L_cells$x
-L_cells_df = data.frame(t = L_cells$x, L = L_cells$y, J = J_cells)
+L_cells_df = data.frame(t = L_cells$x, L = L_cells$y, J = J_cells, 
+                        Data = rep('cells', length(J_cells)))
 
 L_plot[[1]] = ggplot(data = L_cells_df, aes(x=t, y=L)) + 
   geom_path() + 
@@ -82,7 +83,8 @@ L_plot[[1]] = ggplot(data = L_cells_df, aes(x=t, y=L)) +
 
 L_redwood = Kfn(redwood, fs = 1) 
 J_redwood = L_redwood$y/L_redwood$x
-L_redwood_df = data.frame(t = L_redwood$x, L = L_redwood$y, J = J_redwood)
+L_redwood_df = data.frame(t = L_redwood$x, L = L_redwood$y, J = J_redwood,
+                          Data = rep('redwood', length(J_cells)))
 
 L_plot[[2]] = ggplot(data = L_redwood_df, aes(x=t, y=L)) + 
   geom_path() + 
@@ -93,7 +95,8 @@ L_plot[[2]] = ggplot(data = L_redwood_df, aes(x=t, y=L)) +
 
 L_pines = Kfn(pines, fs = 1)
 J_pines = L_pines$y/L_pines$x
-L_pines_df = data.frame(t = L_pines$x, L = L_pines$y, J = J_pines)
+L_pines_df = data.frame(t = L_pines$x, L = L_pines$y, J = J_pines,
+                        Data = rep('pines', length(J_cells)))
 
 L_plot[[3]] = ggplot(data = L_pines_df, aes(x=t, y=L)) + 
   geom_path() + 
@@ -101,12 +104,24 @@ L_plot[[3]] = ggplot(data = L_pines_df, aes(x=t, y=L)) +
   ggtitle("L-interaction function for pine trees") +
   theme(plot.title = element_text(hjust = 0.5))
 
-L_emp = grid.arrange(grobs = L_plot, ncol = 1)
+#Empirical and theoretical L
+L_emp_theor = grid.arrange(grobs = L_plot, ncol = 1)
 
-ggsave("../figures/prob1_L_empirical.pdf", plot = L_emp, device = NULL, path = NULL,
+ggsave("../figures/prob1_L_emp_theor.pdf", plot = L_emp_theor, device = NULL, path = NULL,
        scale = 1, width = 5.5, height = 4*2, units = "in",
        dpi = 300, limitsize = TRUE)
 
+#All empirical in one display
+L_all = rbind(L_cells_df, L_redwood_df, L_pines_df)
+
+ggplot(data = L_all, aes(x=t, y=L, col = Data)) + 
+  geom_path() + 
+  ggtitle("L-interaction functions") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggsave("../figures/prob1_L_empirical.pdf", plot = last_plot(), device = NULL, path = NULL,
+       scale = 1, width = 5.5, height = 4, units = "in",
+       dpi = 300, limitsize = TRUE)
 ###############################################################
 ###############################################################
 #c)
