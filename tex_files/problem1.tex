@@ -82,4 +82,18 @@ We will now perform an empirical Monte Carlo test to assess whether a stationary
 
 The domain for each data set is the square $[0,1] \times [0,1]$, to generate realizations of the Poisson RF, we can draw $x$-coordinates and $y$-coordinates from a uniform (0,1)-distribution. For each data set we draw $100$ realizations with the same amount of data points as in the original set. That is, for the \textit{cells} data, which consists of $42$ points, we sample $42\cdot 100$ $x$-coordinates and the same amount of $y$-coordinates, uniformly. For each realization, we compute the empirical L-function, and then we use these to test whether the original data set may origin from a Poisson RF.
 
+If the given data points origin from a stationary Poisson RF, their empirical L-functions should behave approximately as the generated realizations. 
 
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.95]{figures/prob1_L_empirical.pdf}
+    \caption{Empirical L-interaction functions for the three data sets.}
+    \label{fig:L_emp}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.95]{figures/prob1_L_empirical.pdf}
+    \caption{Empirical L-interaction functions for the three data sets.}
+    \label{fig:L_emp}
+\end{figure}
