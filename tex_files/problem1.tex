@@ -26,7 +26,7 @@ For this task, three sets of real data points are studied. The data is loaded fr
     \label{fig:pines_points}
 \end{figure}
 
-Figures \ref{fig:cells_points}, \ref{fig:redwood_points} and \ref{fig:pines_points} show the three different data point patterns. These patterns have different properties. The pines data points in figure \ref{fig:pines_points} seem to be scattered around at random; some close together and some further away without any particular trend. The redwood data points (figure \ref{fig:redwood_points}) are more clustered. This is actually a known feature for redwood trees, as baby redwoods often grow on top of the roots of their parents to get nutrients (https://www.livescience.com/39461-sequoias-redwood-trees.html). The cells (figure \ref{fig:cells_points}) data on the other hand, show the exact opposite property. The points seem to be spread out to max out the space for each cell points, i.e. there seem to be a repulsive effect.
+Figures \ref{fig:cells_points}, \ref{fig:redwood_points} and \ref{fig:pines_points} show the three different data point patterns. These patterns have different properties. The pines data points in Figure \ref{fig:pines_points} seem to be scattered around at random; some close together and some further away without any particular trend. The redwood data points (Figure \ref{fig:redwood_points}) are more clustered. This is actually a known feature for redwood trees, as baby redwoods often grow on top of the roots of their parents to get nutrients (https://www.livescience.com/39461-sequoias-redwood-trees.html). The cells (Figure \ref{fig:cells_points}) data on the other hand, show the exact opposite property. The points seem to be spread out to max out the space for each cell points, i.e. there seem to be a repulsive effect.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{b)}
@@ -56,7 +56,7 @@ Inserting for $J(t)$ we get that for stationary Poisson RF
     L(t) = t
 \end{equation}
 
-In R, the empirical L-interaction function can be found using the function Kfn() from the library \textit{spatial}. The empirical L-function for the three data sets are shown in figure \ref{fig:L_emp}. The plots follow more or less the same straight line for intermediate distances, but for large and in particular for small distances, the functions are somewhat different. The \textit{cells data} seem to have little interaction at small distances, but has the highest at large distances. The \textit{redwood data}, on the other hand, seem to have higher interaction at small distances. This fits with the observations from problem 1a) that the \textit{redwood data} seemed to be more clustered than the others and the \textit{cells data} more repulsive. 
+In R, the empirical L-interaction function can be found using the function Kfn() from the library \textit{spatial}. The empirical L-function for the three data sets are shown in Figure \ref{fig:L_emp}. The plots follow more or less the same straight line for intermediate distances, but for large and in particular for small distances, the functions are somewhat different. The \textit{cells data} seem to have little interaction at small distances, but has the highest at large distances. The \textit{redwood data}, on the other hand, seem to have higher interaction at small distances. This fits with the observations from problem 1a) that the \textit{redwood data} seemed to be more clustered than the others and the \textit{cells data} more repulsive. 
 
 \begin{figure}
     \centering
@@ -65,7 +65,7 @@ In R, the empirical L-interaction function can be found using the function Kfn()
     \label{fig:L_emp}
 \end{figure}
 
-If a stationary Poisson RF is a good model for the data sets, then the empirical L-function should approximately follow $L(t) = t$. In figure \ref{fig:L_emp_theor}, the empirical interactive functions are plotted against this line. Here, deviation from the line at small distances for the \textit{cells data} and the \textit{redwood data} becomes maybe even more apparent. The \textit{pines data} follows the pretty well, though there is some deviation for larger distances. 
+If a stationary Poisson RF is a good model for the data sets, then the empirical L-function should approximately follow $L(t) = t$. In Figure \ref{fig:L_emp_theor}, the empirical interactive functions are plotted against this line. Here, deviation from the line at small distances for the \textit{cells data} and the \textit{redwood data} becomes maybe even more apparent. The \textit{pines data} follows the pretty well, though there is some deviation for larger distances. 
 
 \begin{figure}
     \centering
@@ -82,18 +82,18 @@ We will now perform an empirical Monte Carlo test to assess whether a stationary
 
 The domain for each data set is the square $[0,1] \times [0,1]$, to generate realizations of the Poisson RF, we can draw $x$-coordinates and $y$-coordinates from a uniform (0,1)-distribution. For each data set we draw $100$ realizations with the same amount of data points as in the original set. That is, for the \textit{cells} data, which consists of $42$ points, we sample $42\cdot 100$ $x$-coordinates and the same amount of $y$-coordinates, uniformly. For each realization, we compute the empirical L-function, and then we use these to test whether the original data set may origin from a Poisson RF.
 
-If the given data points origin from a stationary Poisson RF, their empirical L-functions should behave approximately as the generated realizations. 
+If the given data points origin from a stationary Poisson RF, their empirical L-functions should behave approximately as the generated realizations. The L-functions of these realizations, with corresponding empirical $95\%$ and $5\%$ quantiles, are displayed in Figure \ref{fig:poiss_samps}. The same quantiles, making up a $0.9$-interval, are displayed in Figure \ref{fig:poiss_quantiles} together with the empirical L-function of the original data points.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/prob1_L_empirical.pdf}
-    \caption{Empirical L-interaction functions for the three data sets.}
-    \label{fig:L_emp}
+    \includegraphics[scale=0.95]{figures/prob1_samples.pdf}
+    \caption{}
+    \label{fig:poiss_samps}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/prob1_L_empirical.pdf}
-    \caption{Empirical L-interaction functions for the three data sets.}
-    \label{fig:L_emp}
+    \includegraphics[scale=0.95]{figures/prob1_quantiles.pdf}
+    \caption{}
+    \label{fig:poiss_quantiles}
 \end{figure}
