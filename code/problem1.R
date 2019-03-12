@@ -77,8 +77,8 @@ L_cells_df = data.frame(t = L_cells$x, L = L_cells$y, J = J_cells,
                         Data = rep('cells', length(J_cells)))
 
 L_plot[[1]] = ggplot(data = L_cells_df, aes(x=t, y=L)) + 
-  geom_path() + 
-  geom_abline(slope = 1, intercept = 0, col = 'red') +
+  geom_abline(slope = 1, intercept = 0) +
+  geom_path(col = 'red') + 
   ggtitle("L-interaction function for cells") +
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -89,8 +89,8 @@ L_redwood_df = data.frame(t = L_redwood$x, L = L_redwood$y, J = J_redwood,
                           Data = rep('redwood', length(J_cells)))
 
 L_plot[[2]] = ggplot(data = L_redwood_df, aes(x=t, y=L)) + 
-  geom_path() + 
-  geom_abline(slope = 1, intercept = 0, col = 'red') +
+  geom_abline(slope = 1, intercept = 0) +
+  geom_path(col = 'red') + 
   ggtitle("L-interaction function for redwood trees") +
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -101,8 +101,8 @@ L_pines_df = data.frame(t = L_pines$x, L = L_pines$y, J = J_pines,
                         Data = rep('pines', length(J_cells)))
 
 L_plot[[3]] = ggplot(data = L_pines_df, aes(x=t, y=L)) + 
-  geom_path() + 
-  geom_abline(slope = 1, intercept = 0, col = 'red') +
+  geom_abline(slope = 1, intercept = 0) +
+  geom_path(col = 'red') + 
   ggtitle("L-interaction function for pine trees") +
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -285,11 +285,11 @@ pines2 = ggplot(data = pines.quantiles) +
 plot.samples = grid.arrange(grobs = list(cells1, redwood1, pines1), ncol = 1)
 
 ggsave("../figures/prob1_samples.pdf", plot = plot.samples, device = NULL, path = NULL,
-       scale = 1, width = 5, height = 4*2.5, units = "in",
+       scale = 1, width = 5.5, height = 4*2, units = "in",
        dpi = 300, limitsize = TRUE)
 
 plot.quantiles = grid.arrange(grobs = list(cells2, redwood2, pines2), ncol = 1)
 
 ggsave("../figures/prob1_quantiles.pdf", plot = plot.quantiles, device = NULL, path = NULL,
-       scale = 1, width = 5, height = 4*2.5, units = "in",
+       scale = 1, width = 5.5, height = 4*2, units = "in",
        dpi = 300, limitsize = TRUE)
