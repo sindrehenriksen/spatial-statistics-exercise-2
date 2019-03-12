@@ -7,6 +7,8 @@
 library(spatial)
 library(ggplot2)
 library(gridExtra)
+library(reshape2)
+library(RColorBrewer)
 
 #Read data
 #NB these are a bit different from the ones on the web page. 
@@ -107,9 +109,9 @@ L_plot[[3]] = ggplot(data = L_pines_df, aes(x=t, y=L)) +
 #Empirical and theoretical L
 L_emp_theor = grid.arrange(grobs = L_plot, ncol = 1)
 
-ggsave("../figures/prob1_L_emp_theor.pdf", plot = L_emp_theor, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 4*2, units = "in",
-       dpi = 300, limitsize = TRUE)
+#ggsave("../figures/prob1_L_emp_theor.pdf", plot = L_emp_theor, device = NULL, path = NULL,
+#       scale = 1, width = 5.5, height = 4*2, units = "in",
+#       dpi = 300, limitsize = TRUE)
 
 #All empirical in one display
 L_all = rbind(L_cells_df, L_redwood_df, L_pines_df)
@@ -119,10 +121,175 @@ ggplot(data = L_all, aes(x=t, y=L, col = Data)) +
   ggtitle("L-interaction functions") +
   theme(plot.title = element_text(hjust = 0.5))
 
-ggsave("../figures/prob1_L_empirical.pdf", plot = last_plot(), device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 4, units = "in",
-       dpi = 300, limitsize = TRUE)
+#ggsave("../figures/prob1_L_empirical.pdf", plot = last_plot(), device = NULL, path = NULL,
+#       scale = 1, width = 5.5, height = 4, units = "in",
+#       dpi = 300, limitsize = TRUE)
 ###############################################################
 ###############################################################
 #c)
+set.seed(4250)
 
+#Condition on number of observed points
+Num_cells = length(cells$x)
+Num_redw = length(redwood$x)
+Num_pines = length(pines$x)
+Num_samps = 100
+
+#Relevant positions in both directions are [0,1]
+#Generate realizations
+samps_cells_x = matrix(runif(Num_samps*Num_cells), ncol = Num_samps)
+samps_cells_y = matrix(runif(Num_samps*Num_cells), ncol = Num_samps)
+
+samps_redwood_x = matrix(runif(Num_samps*Num_redw), ncol = Num_samps)
+samps_redwood_y = matrix(runif(Num_samps*Num_redw), ncol = Num_samps)
+
+samps_pines_x = matrix(runif(Num_samps*Num_pines), ncol = Num_samps)
+samps_pines_y = matrix(runif(Num_samps*Num_pines), ncol = Num_samps)
+
+
+#Preallocate matrix to save L-function
+L_samps_cells_t = matrix(0, nrow = 70, ncol = Num_samps)
+L_samps_cells_L = matrix(0, nrow = 70, ncol = Num_samps)
+
+L_samps_redwood_t = matrix(0, nrow = 70, ncol = Num_samps)
+L_samps_redwood_L = matrix(0, nrow = 70, ncol = Num_samps)
+
+L_samps_pines_t = matrix(0, nrow = 70, ncol = Num_samps)
+L_samps_pines_L = matrix(0, nrow = 70, ncol = Num_samps)
+
+#Compute L for each sample
+for (i in 1:Num_samps){
+  temp_L_cells = Kfn(list(x = samps_cells_x[,i], 
+                          y = samps_cells_y[,i]), fs = 1)
+  L_samps_cells_t[,i] = temp_L_cells$x
+  L_samps_cells_L[,i] = temp_L_cells$y
+  
+  temp_L_redwood = Kfn(list(x = samps_redwood_x[,i], 
+                            y = samps_redwood_y[,i]), fs = 1)
+  L_samps_redwood_t[,i] = temp_L_redwood$x
+  L_samps_redwood_L[,i] = temp_L_redwood$y
+  
+  temp_L_pines = Kfn(list(x = samps_pines_x[,i], 
+                          y = samps_pines_y[,i]), fs = 1)
+  L_samps_pines_t[,i] = temp_L_pines$x
+  L_samps_pines_L[,i] = temp_L_pines$y
+}
+
+#############################################
+#Empirical 0.9-intervals
+cells.quantiles = data.frame(lower = rep(0,70), upper =rep(0,70))
+redwood.quantiles = data.frame(lower = rep(0,70), upper =rep(0,70))
+pines.quantiles = data.frame(lower = rep(0,70), upper =rep(0,70))
+for (i in 1:70){
+  cells.quantiles[i,]= quantile(L_samps_cells_L[i,], c(0.05,0.95))
+  redwood.quantiles[i,]= quantile(L_samps_cells_L[i,], c(0.05,0.95))
+  pines.quantiles[i,]= quantile(L_samps_cells_L[i,], c(0.05,0.95))
+}
+#############################################
+#Empirical test
+
+#############################################
+#Displaying:
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+#Cells:
+L_df = as.data.frame(L_samps_cells_L)
+L_df$t = L_samps_cells_t[,1]
+#Changing format to be able to plot all realisations
+long_L = melt(L_df, id = 't')
+
+cells1 = ggplot(long_L,
+             aes(x=t, y=value, colour=variable)) +
+  scale_colour_manual(values=rep(cbPalette, length = Num_samps))+
+  geom_line()+
+  geom_line(data = cells.quantiles, aes(y = lower, x = L_df$t), 
+            inherit.aes = FALSE, col = 'black')+
+  geom_line(data = cells.quantiles, aes(y = upper, x = L_df$t), 
+            inherit.aes = FALSE, col = 'black')+
+  #geom_line(data = L_cells_df, aes(y = L), col = 'black' )+
+  ggtitle("Generated L-functions: Cells") +
+  xlab("t")+
+  ylab("L") +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
+print(cells1)
+
+#melt(data.frame(L_cells_df$t, L_cells_df$L, cells.quantiles), id = 't')
+cells2 = ggplot(data = cells.quantiles) +
+  geom_line(aes(y = lower, x = L_df$t), col = 'black')+
+  geom_line(aes(y = upper, x = L_df$t), col = 'black')+
+  geom_line(data = L_cells_df, aes(y = L, x = t), col = 'red' )+
+  ggtitle("L-function with Poisson RF quantiles: Cells") +
+  xlab("t")+
+  ylab("L") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+###########################
+#Redwood:
+L_df = as.data.frame(L_samps_redwood_L)
+L_df$t = L_samps_redwood_t[,1]
+#Changing format to be able to plot all realisations
+long_L = melt(L_df, id = 't')
+
+redwood1 = ggplot(long_L,
+       aes(x=t, y=value, colour=variable)) +
+  scale_colour_manual(values=rep(cbPalette, length = Num_samps))+
+  geom_line()+
+  geom_line(data = redwood.quantiles, aes(y = lower, x = L_df$t), 
+            inherit.aes = FALSE, col = 'black')+
+  geom_line(data = redwood.quantiles, aes(y = upper, x = L_df$t), 
+            inherit.aes = FALSE, col = 'black')+
+  #geom_line(data = L_redwood_df, aes(y = L), col = 'black' )+
+  ggtitle("Generated L-functions: Redwood") +
+  xlab("t")+
+  ylab("L") +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
+
+redwood2 = ggplot(data = redwood.quantiles) +
+  geom_line(aes(y = lower, x = L_df$t), col = 'black')+
+  geom_line(aes(y = upper, x = L_df$t), col = 'black')+
+  geom_line(data = L_redwood_df, aes(y = L, x = t), col = 'red' )+
+  ggtitle("L-function with Poisson RF quantiles: Redwood") +
+  xlab("t")+
+  ylab("L") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+###########################
+#Pines:
+L_df = as.data.frame(L_samps_pines_L)
+L_df$t = L_samps_pines_t[,1]
+#Changing format to be able to plot all realisations
+long_L = melt(L_df, id = 't')
+
+pines1 = ggplot(long_L,
+       aes(x=t, y=value, colour=variable)) +
+  scale_colour_manual(values=rep(cbPalette, length = Num_samps))+
+  geom_line()+
+  geom_line(data = pines.quantiles, aes(y = lower, x = L_df$t), 
+            inherit.aes = FALSE, col = 'black')+
+  geom_line(data = pines.quantiles, aes(y = upper, x = L_df$t), 
+            inherit.aes = FALSE, col = 'black')+
+  #geom_line(data = L_pines_df, aes(y = L), col = 'black' )+
+  ggtitle("Generated L-functions: Pines") +
+  xlab("t")+
+  ylab("L") +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
+
+pines2 = ggplot(data = pines.quantiles) +
+  geom_line(aes(y = lower, x = L_df$t), col = 'black')+
+  geom_line(aes(y = upper, x = L_df$t), col = 'black')+
+  geom_line(data = L_pines_df, aes(y = L, x = t), col = 'red' )+
+  ggtitle("L-function with Poisson RF quantiles: Pines") +
+  xlab("t")+
+  ylab("L") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+plot.samples = grid.arrange(grobs = list(cells1, redwood1, pines1), ncol = 1)
+
+ggsave("../figures/prob1_samples.pdf", plot = plot.samples, device = NULL, path = NULL,
+       scale = 1, width = 5, height = 4*2.5, units = "in",
+       dpi = 300, limitsize = TRUE)
+
+plot.quantiles = grid.arrange(grobs = list(cells2, redwood2, pines2), ncol = 1)
+
+ggsave("../figures/prob1_quantiles.pdf", plot = plot.quantiles, device = NULL, path = NULL,
+       scale = 1, width = 5, height = 4*2.5, units = "in",
+       dpi = 300, limitsize = TRUE)
