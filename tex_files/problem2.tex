@@ -46,7 +46,9 @@ We wish to estimate the intensity $\lambda_k$ based on the observations and obse
     \hat{\lambda_k} = \frac{\sum_{i=1}^n d_i / \alpha_i}{|L|} \approx 0.01016 \, .
 \end{equation*}
 %
-There are (at least) two equivalent ways to simulate event counts and approximate event locations from the Poisson random field on $L$ with intensity $\hat{\lambda}$. One is to simulate from a Poisson distribution with parameter $|L|\hat{\lambda} = 90000\hat{\lambda}$ to get a total count $m$ and uniformly distribute the $m$ points over the grid. The other way is to simulate 900 times from a Poisson distribution with intensity $100\hat{\lambda}$ to get a vector of counts $\vect{m}$ corresponding to the 900 grid nodes. We do the latter for simplicity (when programming). The results are displayed in \ref{fig:}
+There are (at least) two equivalent ways to simulate event counts and approximate event locations from the Poisson random field on $L$ with intensity $\hat{\lambda}$. One is to simulate from a Poisson distribution with parameter $|L|\hat{\lambda} = 90000\hat{\lambda}$ to get a total count $m$ and uniformly distribute the $m$ points over the grid. The other way is to simulate 900 times from a Poisson distribution with intensity $100\hat{\lambda}$ to get a vector of counts $\vect{m}$ corresponding to the 900 grid nodes. These are equivalent since we assume the field is stationary.
+
+We do the latter for simplicity (when programming). The results are displayed in \ref{fig:}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{d)}
