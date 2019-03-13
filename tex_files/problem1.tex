@@ -82,7 +82,7 @@ We will now perform an empirical Monte Carlo test to assess whether a stationary
 
 The domain for each data set is the square $[0,1] \times [0,1]$, to generate realizations of the Poisson RF, we can draw $x$-coordinates and $y$-coordinates from a uniform (0,1)-distribution. For each data set we draw $100$ realizations with the same amount of data points as in the original set. That is, for the \textit{cells} data, which consists of $42$ points, we sample $42\cdot 100$ $x$-coordinates and the same amount of $y$-coordinates, uniformly. For each realization, we compute the empirical L-function, and then we use these to test whether the original data set may origin from a Poisson RF.
 
-If the given data points origin from a stationary Poisson RF, their empirical L-functions should behave approximately as the generated realizations. The L-functions of these realizations, with corresponding empirical $95\%$ and $5\%$ quantiles, are displayed in Figure \ref{fig:poiss_samps}. The same quantiles, making up a $0.9$-interval, are displayed in Figure \ref{fig:poiss_quantiles} together with the empirical L-function of the original data points.
+If the given data points origin from a stationary Poisson RF, their empirical L-functions should behave approximately as the generated realizations. The L-functions of these realizations, with corresponding empirical $95\%$ and $5\%$ quantiles, are displayed in Figure \ref{fig:poiss_samps}. The same quantiles, making up a $0.9$-interval for each distance $t$, are displayed in Figure \ref{fig:poiss_quantiles} together with the empirical L-function of the original data points.
 
 \begin{figure}
     \centering
@@ -97,3 +97,17 @@ If the given data points origin from a stationary Poisson RF, their empirical L-
     \caption{}
     \label{fig:poiss_quantiles}
 \end{figure}
+
+Thus for each given distance computed by Kfn(), the empirical $0.9$ confidence interval tells us that approximately $90\%$ of all empirical L-functions that are made from stationary Poisson RFs (with the given amount of observed data points) will lay within this interval at this distance. Confidence intervals and hypothesis tests are connected, and another way of assessing the interval is that given that if the original data points origin from a Poisson RF, then for each distance given by the Kfn() function, the empirical L-function will only be outside the interval with probability of $0.1$. In Figure \ref{fig:poiss_quantiles}, that for small distances, the L-functions for the \textit{Redwood data} and, in particular, the \textit{Cells data} lay pretty far outside their respective intervals. For large distances, there L-functions do not deviate much from what would be expected, but it makes sense that repulsion and clustering will have the most effect on the number of neighboring events for small distances.
+Test..
+
+We could extend the quantiles to $0.01$ and $0.99$ to make approximate $98\%$ confidence intervals. Figure \ref{fig:poiss_quantiles2} show the area of interest for the \textit{Cells data} and the \textit{Redwood data}. There is only a probability of about $0.01$ to be at either side of the intervals for each $t$. With this clear deviation from what is expected if the data points came from a stationary Poisson RF, we conclude that this hypothesis should be rejected, and thus conclude that a Poisson is not a suitable model for he \textit{Cells data} and the \textit{Redwood data}. 
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.95]{figures/prob1_quantiles2.pdf}
+    \caption{}
+    \label{fig:poiss_quantiles2}
+\end{figure}
+
+The \textit{Pines data} L-function lays within or on the limits of the $0.9$ interval for all distances, and seem to follow a similar pattern as the generated Pines realizations in figure \ref{fig:poiss_samps}. It seems a Poisson RF is a suitable model for this data.
