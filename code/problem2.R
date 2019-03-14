@@ -30,25 +30,52 @@ lambda_hat = sum(data$pines / data$alpha) / tot_area
 n_sims = 10
 prior_sims = replicate(n_sims, rpois(n, node_area*lambda_hat))
 
-# Plot realizations
+# Plot prior realizations
 prior_sim_plots = vector("list", n_sims)
 margin = theme(plot.margin = unit(c(0.4, 0, -0.4, 0), "cm"))
 labs = labs(x="", y="")
+d = data
 for(i in 1:n_sims){
-  d = tibble(x=data$x, y=data$y, pines=prior_sims[,i])
+  d["pines"] = prior_sims[,i]
   prior_sim_plots[[i]] = ggplot(d, aes(x, y)) +
     geom_raster(aes(fill=pines)) + fill + margin + labs
 }
-prior_sim_plots[[1]] = prior_sim_plots[[1]] + top_margin
-prior_sim_plots[[2]] = prior_sim_plots[[2]] + top_margin
 prior_sim_grid_plot = arrangeGrob(grobs=prior_sim_plots, ncol=2)
 ggsave("../figures/p2_prior_sims.pdf", plot=prior_sim_grid_plot,
        width=5, height=8, units="in", dpi=300)
 
-# Plot simulated observations
-sim_obs_plots = vector("list", n_sims)
+# Plot simulated observations####
+prior_sim_obs_plots = vector("list", n_sims)
 for(i in 1:n_sims){
-  o = tibble(x=data$x, y=data$y, pines=rbinom(n, prior_sims[,i], data$alpha))
-  prior_sim_obs_plots[[i]] = ggplot(o, aes(x, y)) +
+  d["pines"] = rbinom(n, prior_sims[,i], data$alpha)
+  prior_sim_obs_plots[[i]] = ggplot(d, aes(x, y)) +
     geom_raster(aes(fill=pines)) + fill
 }
+
+# Generate 10 realizations from posterior with estimated intensity
+posterior_intensity = node_area*lambda_hat*(1 - data$alpha)
+posterior_sims = replicate(n_sims, rpois(n, posterior_intensity))
+
+# Plot posterior realizations
+posterior_sim_plots = vector("list", n_sims)
+for(i in 1:n_sims){
+  d["pines"] = posterior_sims[,i] + data$pines
+  posterior_sim_plots[[i]] = ggplot(d, aes(x, y)) +
+    geom_raster(aes(fill=pines)) + fill + margin + labs
+}
+posterior_sim_grid_plot = arrangeGrob(grobs=posterior_sim_plots, ncol=2)
+ggsave("../figures/p2_posterior_sims.pdf", plot=posterior_sim_grid_plot,
+       width=5, height=8, units="in", dpi=300)
+
+# Plot simulated observations####
+posterior_sim_obs_plots = vector("list", n_sims)
+for(i in 1:n_sims){
+  d["pines"] = rbinom(n, posterior_sims[,i], data$alpha)
+  posterior_sim_obs_plots[[i]] = ggplot(d, aes(x, y)) +
+    geom_raster(aes(fill=pines)) + fill
+}
+
+# Plot posterior expected number of pine trees
+d["pines"] = posterior_intensity + data$pines
+posterior_mean_plot = ggplot(data=d, aes(x, y)) +
+  geom_raster(aes(fill=pines)) + fill
