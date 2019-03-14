@@ -2,13 +2,11 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 rm(list=ls())
 
 library(tidyverse)
-# library(spatial)
-# library(MASS)
+library(gridExtra)
 
 # Load data
 data = as_tibble(read.table("../data/obsprob.txt", header=TRUE))
 data["pines"] = read.table("../data/obspines.txt", header=TRUE)[3]
-# pine_coords = tibble(x=rep(data$x, data$pines), y=rep(data$y, data$pines))
 tot_area = 300^2
 node_area = 100
 n = nrow(data)
@@ -44,13 +42,14 @@ prior_sim_grid_plot = arrangeGrob(grobs=prior_sim_plots, ncol=2)
 ggsave("../figures/p2_prior_sims.pdf", plot=prior_sim_grid_plot,
        width=5, height=8, units="in", dpi=300)
 
-# Plot simulated observations####
+# Plot simulated observations (not part of the exercise, just for inspection)
 prior_sim_obs_plots = vector("list", n_sims)
 for(i in 1:n_sims){
   d["pines"] = rbinom(n, prior_sims[,i], data$alpha)
   prior_sim_obs_plots[[i]] = ggplot(d, aes(x, y)) +
     geom_raster(aes(fill=pines)) + fill
 }
+# grid.arrange(grobs=prior_sim_obs_plots, ncol=2)
 
 # Generate 10 realizations from posterior with estimated intensity
 posterior_intensity = node_area*lambda_hat*(1 - data$alpha)
@@ -67,15 +66,18 @@ posterior_sim_grid_plot = arrangeGrob(grobs=posterior_sim_plots, ncol=2)
 ggsave("../figures/p2_posterior_sims.pdf", plot=posterior_sim_grid_plot,
        width=5, height=8, units="in", dpi=300)
 
-# Plot simulated observations####
+# Plot simulated observations (not part of the exercise, just for inspection)
 posterior_sim_obs_plots = vector("list", n_sims)
 for(i in 1:n_sims){
-  d["pines"] = rbinom(n, posterior_sims[,i], data$alpha)
+  d["pines"] = rbinom(n, posterior_sims[,i] + data$pines, data$alpha)
   posterior_sim_obs_plots[[i]] = ggplot(d, aes(x, y)) +
     geom_raster(aes(fill=pines)) + fill
 }
+# grid.arrange(grobs=posterior_sim_obs_plots, ncol=2)
 
 # Plot posterior expected number of pine trees
 d["pines"] = posterior_intensity + data$pines
 posterior_mean_plot = ggplot(data=d, aes(x, y)) +
   geom_raster(aes(fill=pines)) + fill
+ggsave("../figures/p2_posterior_mean.pdf", plot=posterior_mean_plot,
+       width=5, height=4, units="in", dpi=300)
