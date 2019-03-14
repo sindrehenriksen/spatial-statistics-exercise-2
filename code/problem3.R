@@ -89,7 +89,7 @@ neuman_scott <- function(lambda_c,sigma_c,lambda_m){
 x.ns<-neuman_scott(lambda_c,sigma_c,3)
 cluster.event.plot <- ggplot(data = x.ns,aes(x=x, y=y)) + 
   geom_point(aes(colour = factor(cluster)),size=2) +
-  scale_color_brewer(palette = "Paired")+
+  scale_color_brewer(palette = "Dark2")+
   ggtitle("Clustered event RF") +
   theme(plot.title = element_text(hjust = 0.5))+
   labs(colour = "Cluster")+
