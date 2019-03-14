@@ -196,8 +196,6 @@ for (i in 1:70){
   redwood.quantiles2[i,]= quantile(L_samps_cells_L[i,], c(0.01,0.99))
   pines.quantiles2[i,]= quantile(L_samps_cells_L[i,], c(0.01,0.99))
 }
-#############################################
-#Empirical test
 
 #############################################
 #Displaying:
@@ -327,6 +325,6 @@ redwood3 = ggplot(data = redwood.quantiles2[1:l,]) +
 
 plot.quantiles2 = grid.arrange(grobs = list(cells3, redwood3), ncol = 1)
 
-ggsave("../figures/prob1_quantiles2.pdf", plot = plot.quantiles2, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 4*2, units = "in",
-      dpi = 300, limitsize = TRUE)
+#ggsave("../figures/prob1_quantiles2.pdf", plot = plot.quantiles2, device = NULL, path = NULL,
+#       scale = 1, width = 5.5, height = 4*2, units = "in",
+#      dpi = 300, limitsize = TRUE)
