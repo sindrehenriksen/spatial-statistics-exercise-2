@@ -5,19 +5,19 @@
 \paragraph{a)}
 An area of size $(300 \times 300) \, \si{\meter^2}$ containing a pine tree forest is considered, and the actual locations of the pine trees are to be assessed. The pine tree locations are observed from a satellite by remote sensing, and due to partly cloudy weather the observation probability for individual trees vary across the area.
 
-The area is discretized into a regular $(30 \times 30)$-grid $L$ with grid unit size $\SI{100}{\meter^2}$. The true, but unknown, number of pine trees located in each grid unit is $\{k(x) \ssep x \in L\}$. The observed number of pine trees is shown in figure~\ref{fig:p2_pines}. The probabilities for observing a pine tree in each grid unit is represented by $\{\alpha(x) \ssep x \in L\}$, see figure~\ref{fig:p2_alpha}. There could seem to be more trees as x and y grows, but the observation probabilities also increase in the same direction. I.e. the random field might truly be stationary.
+The area is discretized into a regular $(30 \times 30)$-grid $L$ with grid unit size $\SI{100}{\meter^2}$. The true, but unknown, number of pine trees located in each grid unit is $\{k(x) \ssep x \in L\}$. The observed number of pine trees is shown in Figure~\ref{fig:p2_pines}. The probabilities for observing a pine tree in each grid unit is represented by $\{\alpha(x) \ssep x \in L\}$, see Figure~\ref{fig:p2_alpha}. There could seem to be more trees as x and y grows, but the observation probabilities also increase in the same direction. I.e. the random field might truly be stationary.
 
 \begin{figure}
     \centering
     \includegraphics{figures/p2_pines.pdf}
-    \caption{Plot of the number of observed pine trees in the grid defined in 6a.}
+    \caption{Plot of the number of observed pine trees in the grid defined in \ref{sec:problem2}a.}
     \label{fig:p2_pines}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics{figures/p2_alpha.pdf}
-    \caption{Plot of the observation probabilities (of pine trees) in the grid defined in 6a.}
+    \caption{Plot of the observation probabilities (of pine trees) in the grid defined in \ref{sec:problem2}a.}
     \label{fig:p2_alpha}
 \end{figure}
 
@@ -48,7 +48,7 @@ We wish to estimate the intensity $\lambda_k$ based on the observations and obse
 %
 There are (at least) two equivalent ways to simulate event counts and approximate event locations from the Poisson random field on $L$ with intensity $\hat{\lambda}$. One is to simulate from a Poisson distribution with parameter $|L|\hat{\lambda} = 90000\hat{\lambda}$ to get a total count $m$ and uniformly distribute the $m$ points over the grid. The other way is to simulate 900 times from a Poisson distribution with intensity $100\hat{\lambda}$ to get a vector of counts $\vect{m}$ corresponding to the 900 grid nodes. These are equivalent since we assume the field is stationary.
 
-We do the latter for simplicity (when programming). The results are displayed in figure~\ref{fig:p2_prior_sims}.
+We do the latter for simplicity (when programming). The results are displayed in Figure~\ref{fig:p2_prior_sims}.
 
 \begin{figure}
     \centering
@@ -71,11 +71,15 @@ The posterior discretized  event-count model is given by
 %
 By independence the density of $k_i$, $i = 1, \dots, 900$, is given by simply removing the product symbol in the last line of \eqref{eq:p2_posterior}. I.e. $(k_i - d_i \given d_i, \lambda_k) \sim \Pois(100\lambda_k[1-\alpha_i])$. This makes sense intuitively; $\E(k_i - d_i \given d_i, \lambda_k) = 100\lambda_k(1-\alpha_i) = \E(k_i) - \alpha_i\E(k_i)$, i.e. the expected difference between $k_i$ and $d_i$ is just the expected number of pine trees less the observation probability multiplied by the expected number of trees. Thus the posterior model is a Poisson RF model.
 
-10 realizations of the associated approximate event-location model are generated in a similar way as in c). We simulate from the 900 from Poisson distributions with intensities $100\lambda_k(1-\alpha_i)$ and add $d_i$, $i = 1, \dots, 900$. The results are illustrated in Figure~\ref{fig:p2_posterior_sims}
+10 realizations of the associated approximate event-location model are generated in a similar way as in c). We simulate from the 900 from Poisson distributions with intensities $100\lambda_k(1-\alpha_i)$ and add $d_i$, $i = 1, \dots, 900$. The results are illustrated in Figure~\ref{fig:p2_posterior_sims}.
 
 \begin{figure}
     \centering
-    \includegraphics{}
-    \caption{Caption}
-    \label{fig:my_label}
+    \includegraphics{figures/p2_posterior_sims.pdf}
+    \caption{Plots of 10 realizations from the posterior model defined in \ref{sec:problem2}d with observation data $\vect{d}$ added.}
+    \label{fig:p2_posterior_sims}
 \end{figure}
+
+Qualitatively there does not seem to be much of a difference between the prior and the posterior realizations. Looking closely one can see that in the posterior realizations (with observations $\vect{d}$ added), the points where trees are observed always have a at least the observed value - obviously. There don't seem to be any indications that the random field is not truly stationary, however. If we didn't add $\vect{d}$, the plots would indicate more pine trees towards low $x$ and $y$ values. This is simply because it is more likely that there are unobserved trees in that area.
+
+
