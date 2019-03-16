@@ -42,7 +42,6 @@ redwood.cluster.plot <-fviz_cluster(km.res, data = redwood_df,
                                     stand = FALSE,
                                     geom = "point",
                                     ggtheme = theme_minimal())
-
 redwood.cluster.plot
 # save plot
 ggsave("../figures/redwood_cluster_partitioning.pdf", plot = redwood.cluster.plot, device = NULL, path = NULL,
@@ -50,17 +49,14 @@ ggsave("../figures/redwood_cluster_partitioning.pdf", plot = redwood.cluster.plo
        dpi = 300, limitsize = TRUE)
 
 redwood.cluster <- redwood.cluster.plot$data
+
 # children position gaussian distribution
-#sigma_c <- mean(var(redwood_df$x[redwood.cluster$cluster==1]),
-#                var(redwood_df$y[redwood.cluster$cluster==1]),
-#                var(redwood_df$x[redwood.cluster$cluster==2]),
-#                var(redwood_df$y[redwood.cluster$cluster==2]),
-#                var(redwood_df$x[redwood.cluster$cluster==3]),
-#                var(redwood_df$y[redwood.cluster$cluster==3]))
 sigma_c <- km.res$tot.withinss/length(redwood_df$x)
+
 # number children poisson distributed
 temp_val <- as.data.frame(table(redwood.cluster$cluster))
 lambda_c <- mean(temp_val$Freq)
+
 # neuman-scott event RF
 neuman_scott <- function(lambda_c,sigma_c,lambda_m){
   k <- 0 
@@ -88,11 +84,11 @@ neuman_scott <- function(lambda_c,sigma_c,lambda_m){
 
 x.ns<-neuman_scott(lambda_c,sigma_c,3)
 cluster.event.plot <- ggplot(data = x.ns,aes(x=x, y=y)) + 
-  geom_point(aes(colour = factor(cluster)),size=2) +
+  geom_point(aes(colour = factor(cluster))) +
   scale_color_brewer(palette = "Dark2")+
   ggtitle("Clustered event RF") +
   theme(plot.title = element_text(hjust = 0.5))+
-  labs(colour = "Cluster")+
+  labs(colour = "Mother")+
   theme_minimal()+
   xlim(0, 1)+
   ylim(0, 1)
