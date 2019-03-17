@@ -22,37 +22,22 @@ res.dist.fact <- get_dist(cells_df, stand = FALSE, method = "euclidean")
 fviz_dist(res.dist.fact, order = TRUE, show_labels = TRUE, lab_size = NULL,
           gradient = list(low = "red", mid = "white", high = "blue"))
 
-findPhi <- function(distance){
-  phi.res = numeric(length(distance))
-  model.param = list(
-    tau_0 = min(distance),
-    phi_0 = 200,
-    phi_1 = 60/(max(distance)-min(distance))
-  )
-  for (i in seq(1,length(distance))){
-    phi.res[i] <- phi(distance[i],model.param)
-  }
-  phi.res = enframe(phi.res)
-  phi.res.plot<- ggplot(phi.res,aes(x = name, y = value))+geom_point()
-  return(list(phi.res = phi.res, phi.res.plot = phi.res.plot, model.param = model.param))
-}
-
 phi <- function(tau,model.param){
   if ((tau>=0)&(tau<model.param$tau_0)){
     phi = model.param$phi_0
   }else{
-    phi = model.param$phi_0 * exp(-model.param$phi_1*(tau-model.param$tau_0))
+    phi = model.param$phi_0 * exp(-model.param$phi_1*(tau - model.param$tau_0))
   }
+  return(phi)
 }
-phi.list <- findPhi(res.dist.fact)
 
 acceptanceProb <- function(try_x,try_y,u,xd,yd,model.param){
-  phi.vec = numeric(length(xd))
+  phi.sum = 0
   for (i in seq(1,length(xd))){
-    phi.vec[i] = phi(sqrt((xd[u]-xd[i])^2+(yd[u]-yd[i])^2), model.param) - 
-      phi(sqrt((try_x-xd[i])^2 + (try_y-yd[i])^2),model.param) 
+    phi.sum = phi.sum - phi(sqrt((xd[u]-xd[i])^2 + (yd[u] - yd[i])^2), model.param) +
+                 phi(sqrt((try_x - xd[i])^2 + (try_y - yd[i])^2),model.param) 
   }
-  return(min(1,exp(-sum(phi.vec))))
+  return(min(1,exp(phi.sum)))
 }
 
 straussEventRF <- function(k,model.param){
@@ -63,28 +48,31 @@ straussEventRF <- function(k,model.param){
   yd= runif(k)
   x0 = xd
   y0 = yd
+  acceptance.prob = numeric(M)
   for (i in seq(1,M)){
     setTxtProgressBar(pb, i)
-    u = sample(x=seq(1,k),size=1)
+    u = round(runif(1,1,k))
     try_x = runif(1)
     try_y = runif(1)
-    acceptance.prob <- acceptanceProb(try_x,try_y,u,xd,yd,model.param)
-    if (runif(1)<acceptance.prob){
+    acceptance.prob[i] <- acceptanceProb(try_x,try_y,u,xd,yd,model.param)
+    if (runif(1)<acceptance.prob[i]){
       xd[u] = try_x
       yd[u] = try_y
     }
   }
-  return(data.frame(x=xd,y=yd,x0 = x0, y0 = y0))
+  return(list(df = data.frame(x=xd,y=yd,x0 = x0, y0 = y0),accep.prob = acceptance.prob))
 }
 k = length(cells_df$x)
 
 model.param <- list(
-  tau_0 = median(res.dist.fact),
-  phi_0 = 200,
-  phi_1 = 90/(max(res.dist.fact)-min(res.dist.fact))
+  tau_0 = 0.8*min(res.dist.fact),
+  phi_0 = 10,
+  phi_1 = 200
 )
 run_time <- system.time(repulsive.event.rf<-straussEventRF(k,model.param))
-ggplot(repulsive.event.rf) + 
+ggplot(repulsive.event.rf$df) + 
   geom_point(aes(x=x,y=y), color ="red") + 
   geom_point(aes(x=x0,y=y0),color = "blue")
 
+ggplot(enframe(repulsive.event.rf$accep.prob))+
+  geom_point(aes(x = name, y= value))
