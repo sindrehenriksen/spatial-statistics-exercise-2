@@ -67,13 +67,16 @@ k = length(cells_df$x)
 
 model.param <- list(
   tau_0 = 0.8*min(res.dist.fact),
-  phi_0 = 2000,
-  phi_1 = 20000
+  phi_0 = 200,
+  phi_1 = 200
 )
 run_time <- system.time(repulsive.event.rf<-straussEventRF(k,model.param))
 ggplot(repulsive.event.rf$df) + 
-  geom_point(aes(x=x,y=y), color ="red") + 
-  geom_point(aes(x=x0,y=y0),color = "blue")
+  geom_point(aes(x=x,y=y), color ="red") 
+  #geom_point(aes(x=x0,y=y0),color = "blue")
+
 
 ggplot(enframe(repulsive.event.rf$accep.prob))+
   geom_point(aes(x = name, y= value))
+ggplot(enframe(repulsive.event.rf$accep.prob))+
+  geom_histogram(aes(x = value, y= ..density..),bins = 30)

@@ -97,3 +97,19 @@ ggsave("../figures/cluster_event_rf.pdf", plot = cluster.event.plot, device = NU
        scale = 1, width = 4, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
     
+
+L.cluster = Kfn(list(x=x.ns$x, y=x.ns$y), fs = 1)
+L.cluster.df = data.frame(t = L.cluster$x, L = L.cluster$y)
+
+L.cluster.plot = ggplot(data = L.cluster.df, aes(x=t, y=L)) + 
+  geom_abline(slope = 1, intercept = 0) +
+  geom_path(col = 'red') + 
+  ggtitle("L-interaction function for cluster effect") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+L.cluster.plot
+
+ggsave("../figures/L_cluster_plot.pdf", plot = L.cluster.plot, device = NULL, path = NULL,
+       scale = 1, width = 4, height = 4, units = "in",
+       dpi = 300, limitsize = TRUE)
+

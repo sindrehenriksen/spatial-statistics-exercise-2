@@ -22,10 +22,10 @@ library(RColorBrewer)
 
 #Data from web page 
 #Not all on the same form as above..
-cells = as.list(read.table('../data_files/cells.dat', col.names = c('x', 'y')))
-redwood = as.list(read.table('../data_files/redwood.dat', col.names = c('x', 'y')))
+cells = as.list(read.table('../data/cells.dat', col.names = c('x', 'y')))
+redwood = as.list(read.table('../data/redwood.dat', col.names = c('x', 'y')))
 #pines was on a different form..
-pines = ppinit('../data_files/pines.dat')
+pines = ppinit('../data/pines.dat')
 ###############################################################
 ###############################################################
 #a)
