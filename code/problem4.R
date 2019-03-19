@@ -1,12 +1,12 @@
-#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 rm(list = ls())
 
 library(spatial)
 library(tidyverse)
 library(gridExtra)
-library(reshape2)
 library(RColorBrewer)
 library(factoextra)
+library(fields)
 
 cells = as.list(read.table('../data/cells.dat', col.names = c('x', 'y')))
 
@@ -34,8 +34,9 @@ phi <- function(tau,model.param){
 acceptanceProb <- function(try_x,try_y,u,xd,yd,model.param){
   phi.sum = 0
   for (i in seq(1,length(xd))){
-    phi.sum = phi.sum - phi(sqrt((xd[u]-xd[i])^2 + (yd[u] - yd[i])^2), model.param) +
-                 phi(sqrt((try_x - xd[i])^2 + (try_y - yd[i])^2),model.param) 
+    phi.sum = phi.sum + 
+              phi(sqrt((xd[u]-xd[i])^2 + (yd[u] - yd[i])^2), model.param) -
+              phi(sqrt((try_x - xd[i])^2 + (try_y - yd[i])^2),model.param) 
   }
   return(min(1,exp(phi.sum)))
 }
@@ -45,7 +46,7 @@ straussEventRF <- function(k,model.param){
   M = 300000
   pb <- txtProgressBar(min = 0, max = M, style = 3)
   xd = runif(k)
-  yd= runif(k)
+  yd = runif(k)
   x0 = xd
   y0 = yd
   acceptance.prob = numeric(M)
@@ -66,8 +67,8 @@ k = length(cells_df$x)
 
 model.param <- list(
   tau_0 = 0.8*min(res.dist.fact),
-  phi_0 = 10,
-  phi_1 = 200
+  phi_0 = 2000,
+  phi_1 = 20000
 )
 run_time <- system.time(repulsive.event.rf<-straussEventRF(k,model.param))
 ggplot(repulsive.event.rf$df) + 
