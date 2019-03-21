@@ -23,7 +23,7 @@ fviz_dist(res.dist.fact, order = TRUE, show_labels = TRUE, lab_size = NULL,
           gradient = list(low = "red", mid = "white", high = "blue"))
 
 phi <- function(tau,model.param){
-  if ((tau>=0)&(tau<model.param$tau_0)){
+  if ((tau>=0)&(tau<=model.param$tau_0)){
     phi = model.param$phi_0
   }else{
     phi = model.param$phi_0 * exp(-model.param$phi_1*(tau - model.param$tau_0))
@@ -35,8 +35,8 @@ acceptanceProb <- function(try_x,try_y,u,xd,yd,model.param){
   phi.sum = 0
   for (i in seq(1,length(xd))){
     phi.sum = phi.sum + 
-              phi(sqrt((xd[u]-xd[i])^2 + (yd[u] - yd[i])^2), model.param) -
-              phi(sqrt((try_x - xd[i])^2 + (try_y - yd[i])^2),model.param) 
+              phi(sqrt((xd[u] - xd[i])^2 + (yd[u] - yd[i])^2), model.param) -
+              phi(sqrt((try_x - xd[i])^2 + (try_y - yd[i])^2), model.param) 
   }
   return(min(1,exp(phi.sum)))
 }
@@ -66,11 +66,15 @@ straussEventRF <- function(k,model.param){
 k = length(cells_df$x)
 
 model.param <- list(
-  tau_0 = 0.8*min(res.dist.fact),
-  phi_0 = 200,
-  phi_1 = 200
+  tau_0 = min(res.dist.fact),
+  phi_0 = 70,
+  phi_1 = 56
 )
 run_time <- system.time(repulsive.event.rf<-straussEventRF(k,model.param))
+res.dist.fact.min <- min(get_dist(repulsive.event.rf$df[,1:2], stand = FALSE, method = "euclidean"))
+ggplot(enframe(repulsive.event.rf$accep.prob))+
+  geom_histogram(aes(x = value, y= ..density..),bins = 30)
+
 ggplot(repulsive.event.rf$df) + 
   geom_point(aes(x=x,y=y), color ="red") 
   #geom_point(aes(x=x0,y=y0),color = "blue")
@@ -78,5 +82,4 @@ ggplot(repulsive.event.rf$df) +
 
 ggplot(enframe(repulsive.event.rf$accep.prob))+
   geom_point(aes(x = name, y= value))
-ggplot(enframe(repulsive.event.rf$accep.prob))+
-  geom_histogram(aes(x = value, y= ..density..),bins = 30)
+
