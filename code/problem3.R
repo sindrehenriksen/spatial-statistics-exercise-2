@@ -12,7 +12,7 @@ library(spatstat)
 
 # read data
 redwood = as.list(read.table('../data/redwood.dat', col.names = c('x', 'y')))
-
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 #Display redwood data
 redwood_df = data.frame(x = redwood$x, y = redwood$y)
 
@@ -59,14 +59,17 @@ lambda_c <- mean(km.res$size)
 # neuman-scott event RF
 neuman_scott <- function(lambda_c,sigma_c,lambda_m){
   k <- 0 
-  km <- rpois(1,lambda_m)
+  km = 0
+  while (km == 0){
+    km <- rpois(1,lambda_m)
+  }
   x = numeric(500)
   y = numeric(500)
   cluster = numeric(500)
   for (j in seq(1,km)){
     tmp_x = runif(1)
     tmp_y = runif(1)
-    kc = rpois(1,lambda_c)
+    kc = rbinom(1,length(redwood$x),1/km) #rpois(1,lambda_c)
     for (i in seq(1,kc)){
       try_x = rnorm(1,tmp_x,sigma_c)
       try_y = rnorm(1,tmp_y,sigma_c)
@@ -81,10 +84,10 @@ neuman_scott <- function(lambda_c,sigma_c,lambda_m){
   return(data.frame(x = x[1:k],y = y[1:k],cluster=cluster[1:k]))
 }
 
-x.ns<-neuman_scott(lambda_c,sigma_c,3)
+x.ns<-neuman_scott(lambda_c,sigma_c,9)
 cluster.event.plot <- ggplot(data = x.ns,aes(x=x, y=y)) + 
   geom_point(aes(colour = factor(cluster))) +
-  scale_color_brewer(palette = "Dark2")+
+  scale_colour_manual(values=rep(cbPalette, length = length(x.ns$x)))+
   ggtitle("Clustered event RF") +
   theme(plot.title = element_text(hjust = 0.5))+
   labs(colour = "Mother")+
@@ -95,84 +98,95 @@ cluster.event.plot
 ggsave("../figures/cluster_event_rf.pdf", plot = cluster.event.plot, device = NULL, path = NULL,
        scale = 1, width = 4, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
-    
-
-L.cluster = Kfn(pp=ppp(x = x.ns$x, y=x.ns$y), fs = 1,k=100)
-L.cluster.df = data.frame(t = L.cluster$x, L = L.cluster$y)
-
-L.cluster.plot = ggplot(data = L.cluster.df, aes(x=t, y=L)) + 
-  geom_abline(slope = 1, intercept = 0) +
-  geom_path(col = 'red') + 
-  ggtitle("L-interaction function for cluster effect") +
-  theme(plot.title = element_text(hjust = 0.5))
-
-L.cluster.plot
-
-ggsave("../figures/L_cluster_plot.pdf", plot = L.cluster.plot, device = NULL, path = NULL,
-       scale = 1, width = 4, height = 4, units = "in",
-       dpi = 300, limitsize = TRUE)
 
 # -----------------------------------------------------------------------------
 # Monte Carlo test
-
 set.seed(123)
 
 #Condition on number of observed points
-L.ns <-function(){
-  num.samps = 100
-  temp.rows = 200
-  sample.ns.x <-matrix(NA,nrow = temp.rows,ncol = num.samps)
-  sample.ns.y <-matrix(NA,nrow = temp.rows,ncol = num.samps)
-  L.samps.ns.t = matrix(NA, nrow = temp.rows, ncol = num.samps)
-  L.samps.ns.L = matrix(NA, nrow = temp.rows, ncol = num.samps)
-  
-  for (i in seq(1,num.samps)){
-    temp.sample.cluster = neuman_scott(lambda_c,sigma_c,3)
-    sample.ns.x[,i] = c(temp.sample.cluster$x,rep(NA,temp.rows-length(temp.sample.cluster$x)))
-    sample.ns.y[,i] = c(temp.sample.cluster$y,rep(NA,temp.rows-length(temp.sample.cluster$y)))
-    
-    temp.L.ns = Kfn(pp = list(x = temp.sample.cluster$x, y = temp.sample.cluster$y), fs = 1)
-    L.samps.ns.t = c(temp.L.ns$x,rep(NA,temp.rows-length(temp.L.ns$x)))
-    L.samps.ns.L = c(temp.L.ns$x,rep(NA,temp.rows-length(temp.L.ns$y)))
-  }
+
+num.samps = 100
+temp.rows = 1000
+sample.ns.x <-matrix(NA,nrow = temp.rows,ncol = num.samps)
+sample.ns.y <-matrix(NA,nrow = temp.rows,ncol = num.samps)
+L.samps.ns.t = matrix(NA, nrow = 70, ncol = num.samps)
+L.samps.ns.L = matrix(NA, nrow = 70, ncol = num.samps)
+
+for (i in seq(1,num.samps)){
+  temp.sample.cluster = neuman_scott(lambda_c,sigma_c,9)
+  sample.ns.x[,i] = c(temp.sample.cluster$x,rep(NA,temp.rows-length(temp.sample.cluster$x)))
+  sample.ns.y[,i] = c(temp.sample.cluster$y,rep(NA,temp.rows-length(temp.sample.cluster$y)))
+  temp.sample.cluster.list = as.list(temp.sample.cluster[-3])
+  temp.L.ns = Kfn(temp.sample.cluster.list, fs = 1)
+  L.samps.ns.t[,i] = temp.L.ns$x
+  L.samps.ns.L[,i] = temp.L.ns$y
 }
 
-L.ns()
-redwood.quantiles = data.frame(lower = rep(0,70), upper =rep(0,70))
+
+ns.quantiles = data.frame(lower = rep(0,70), upper =rep(0,70))
 for (i in 1:70){
-  redwood.quantiles[i,]= quantile(L_samps_cells_L[i,], c(0.05,0.95))
+  ns.quantiles[i,]= quantile(L.samps.ns.L[i,], c(0.05,0.95))
 }
 
 #Empirical 0.98-intervals
-redwood.quantiles2 = data.frame(lower = rep(0,70), upper =rep(0,70))
+ns.quantiles2 = data.frame(lower = rep(0,70), upper =rep(0,70))
 for (i in 1:70){
-  redwood.quantiles2[i,]= quantile(L_samps_cells_L[i,], c(0.01,0.99))
+  ns.quantiles2[i,]= quantile(L.samps.ns.L[i,], c(0.01,0.99))
 }
 
-L_df = as.data.frame(L_samps_redwood_L)
-L_df$t = L_samps_redwood_t[,1]
+L_df = as.data.frame(L.samps.ns.L)
+L_df$t = L.samps.ns.t[,1]
 #Changing format to be able to plot all realisations
 long_L = melt(L_df, id = 't')
-
-redwood1 = ggplot(long_L,
+L_redwood = Kfn(redwood, fs = 1) 
+L_redwood_df = data.frame(t = L_redwood$x, L = L_redwood$y)
+ns1.plot = ggplot(long_L,
                   aes(x=t, y=value, colour=variable)) +
-  scale_colour_manual(values=rep(cbPalette, length = Num_samps))+
+  scale_colour_manual(values=rep(cbPalette, length = num.samps))+
   geom_line()+
-  geom_line(data = redwood.quantiles, aes(y = lower, x = L_df$t), 
+  geom_line(data = ns.quantiles, aes(y = lower, x = L_df$t), 
             inherit.aes = FALSE, col = 'black')+
-  geom_line(data = redwood.quantiles, aes(y = upper, x = L_df$t), 
+  geom_line(data = ns.quantiles, aes(y = upper, x = L_df$t), 
             inherit.aes = FALSE, col = 'black')+
   #geom_line(data = L_redwood_df, aes(y = L), col = 'black' )+
-  ggtitle("Generated L-functions: Redwood") +
+  ggtitle("Generated L-functions: Neuman-Scott") +
   xlab("t")+
   ylab("L") +
   theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
 
-redwood2 = ggplot(data = redwood.quantiles) +
+ns1.plot
+ggsave("../figures/gen_ns_l.pdf", plot = ns1.plot, device = NULL, path = NULL,
+       scale = 1, width = 4, height = 4, units = "in",
+       dpi = 300, limitsize = TRUE)
+
+ns2.plot = ggplot(data = ns.quantiles) +
   geom_line(aes(y = lower, x = L_df$t), col = 'black')+
   geom_line(aes(y = upper, x = L_df$t), col = 'black')+
   geom_line(data = L_redwood_df, aes(y = L, x = t), col = 'red' )+
-  ggtitle("Redwood L-function with Poisson RF 0.05 and 0.95 quantiles") +
+  ggtitle("Redwood L-function with Neuman-Scott event RF 0.05 and 0.95 quantiles") +
   xlab("t")+
   ylab("L") +
   theme(plot.title = element_text(hjust = 0.5))
+
+ns2.plot
+
+ggsave("../figures/ns_quant1.pdf", plot = ns2.plot, device = NULL, path = NULL,
+       scale = 1, width = 4, height = 4, units = "in",
+       dpi = 300, limitsize = TRUE)
+
+t_max = 0.25
+l = which(L_df$t ==t_max)
+ns3.plot = ggplot(data = ns.quantiles2[1:l,]) +
+  geom_line(aes(y = lower, x = L_df$t[1:l]), col = 'black')+
+  geom_line(aes(y = upper, x = L_df$t[1:l]), col = 'black')+
+  geom_line(data = L_redwood_df[1:l,], aes(y = L, x = t), col = 'red' )+
+  ggtitle("Redwood L-function with Neuman-Scott event RF 0.01 and 0.99 quantiles") +
+  xlab("t")+
+  ylab("L") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+ns3.plot
+
+ggsave("../figures/ns_quant2.pdf", plot = ns3.plot, device = NULL, path = NULL,
+       scale = 1, width = 4, height = 4, units = "in",
+       dpi = 300, limitsize = TRUE)
