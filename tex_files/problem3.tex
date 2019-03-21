@@ -1,7 +1,7 @@
 \section{}
 \label{sec:problem3}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In this exercise we consider the Neuman-Scott (Mother-Child) event RF model. Using this model the mother-model has a stationary Poisson RF with intensity $\lamba_M$. There exists $k^M$ mothers, and for each mother there exist a number of children distributed according to a pdf $p(k^c)$ around the mother position $\vect{X}_j^M$ and is positionally distributed according to the conditional pdf $p(\vect{x}\given\vect{x}_j^M)$. The child position is then accepted to ensure that $\vect{x}\in\mathrm{D}$. The set of samples generated from a Neuman-Scott even RF is represented by $\matr{X}_D^{NS}:\{\vect{x}_1,\vect{x}_2,...,\vect{x}_{k_D}\}:\{\vect{x}_{ji};j=1,2,...,k_D^M:i = 1,2,...,k_D^c\};\vect{x}_j,\vect{x}_{ji}\in D$ with $k_d = \sum_j k_{D_j}^c$ given by the distribution in Equation \ref{eq:neumanscott}.
+In this exercise we consider the Neuman-Scott (Mother-Child) event RF model. Using this model the mother-model has a stationary Poisson RF with intensity $\lambda_M$. There exists $k^M$ mothers, and for each mother there exist a number of children distributed according to a pdf $p(k^c)$ around the mother position $\vect{X}_j^M$ and is positionally distributed according to the conditional pdf $p(\vect{x} \given \vect{x}_j^M)$. The child position is then accepted to ensure that $\vect{x} \in \mathrm{D}$. The set of samples generated from a Neuman-Scott event RF is represented by $\matr{X}_D^{NS}:\{\vect{x}_1,\vect{x}_2,...,\vect{x}_{k_D}\}:\{\vect{x}_{ji};j=1,2,...,k_D^M:i = 1,2,...,k_D^c\};\vect{x}_j,\vect{x}_{ji}\in D$ with $k_d = \sum_j k_{D_j}^c$ given by the distribution in Equation \ref{eq:neumanscott}.
 \begin{equation}
     \begin{array}{rcl}
         X_D^{NS} & \sim & p(\vect{x}_{ji}; j = 1,2,...,k_D^M; i =1,2,...,k_{D_j}^c) \\
@@ -12,7 +12,7 @@ In this exercise we consider the Neuman-Scott (Mother-Child) event RF model. Usi
          \end{array}
     \label{eq:neumanscott}
 \end{equation}
-From this we can see that the child position model is given by $\vect{x} \sym \Phi(\mathrm{D};\vect{x}_j^M, \sigma_c^2\matr{I}_2)$. Then the model parameters are $\vect{\theta}_{pNS} = \left[\lambda_M,\sigma_c^2,p(\cdot)\right]$, where $\lambda_M$ is the intensity of the number of mothers, $sigma_c^2$ is the deviation of the distance a child is from the mother, and $p(\cdot)$ is the distribution of the number of children around a mother. 
+From this we can see that the child position model is given by $\vect{x} \sim \Phi(\mathrm{D};\vect{x}_j^M, \sigma_c^2\matr{I}_2)$. Then the model parameters are $\vect{\theta}_{pNS} = \left[\lambda_M,\sigma_c^2,p(\cdot)\right]$, where $\lambda_M$ is the intensity of the number of mothers, $sigma_c^2$ is the deviation of the distance a child is from the mother, and $p(\cdot)$ is the distribution of the number of children around a mother. 
 
 To find the parameter $\lambda_M$ a cluster analysis was done. Testing the redwood tree data against $30$ different algorithm for determining number of clusters in our data, or in other words number of mothers. Then a majority vote of the $30$ was thrown and the optimal number was $3$. The result of this is shown in Figure \ref{fig:numb_clust}, which gives us $\lambda_M = 3$. 
 \begin{figure}
@@ -35,22 +35,22 @@ As for the third parameter $p(\cdot)$, the distribution of number of children in
     \caption{}
     \label{fig:cluster_event_rf}
 \end{figure}
-Then a Monte Carlo test was ran on the L-interaction function given by Equation \ref{eq:L_function}. The result of which is shown in Figure \ref{fig:cluster_L_function}. In this figure the L-interaction function of the realization from the Neuman-Scott RF tends to be over the stationary Poisson line. This means that the realizations tend to have a clustered effect which is what we wanted. 
+Then a Monte Carlo test was ran on the L-interaction function given by Equation \ref{eq:L_function}. The result of which is shown in Figure \ref{fig:gen_ns_l}. In this figure the L-interaction function of the realization from the Neuman-Scott RF tends to be over the stationary Poisson line. This means that the realizations tend to have a clustered effect which is what we wanted. 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/L_cluster_plot.pdf}
+    \includegraphics[scale=0.95]{figures/gen_ns_l.pdf}
     \caption{}
-    \label{fig:cluster_L_function}
+    \label{fig:gen_ns_l}
 \end{figure}
 \begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/L_cluster_plot.pdf}
+    \includegraphics[scale=0.95]{figures/ns_quant1.pdf}
     \caption{}
-    \label{fig:cluster_L_function}
+    \label{fig:ns_quant1}
 \end{figure}
 \begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/L_cluster_plot.pdf}
+    \includegraphics[scale=0.95]{figures/ns_quant2.pdf}
     \caption{}
-    \label{fig:cluster_L_function}
+    \label{fig:ns_quant2}
 \end{figure}
