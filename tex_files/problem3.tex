@@ -35,22 +35,27 @@ As for the third parameter $p(\cdot)$, the distribution of number of children in
     \caption{}
     \label{fig:cluster_event_rf}
 \end{figure}
-Then a Monte Carlo test was ran on the L-interaction function given by Equation \ref{eq:L_function}. The result of which is shown in Figure \ref{fig:gen_ns_l}. In this figure the L-interaction function of the realization from the Neuman-Scott RF tends to be over the stationary Poisson line. This means that the realizations tend to have a clustered effect which is what we wanted. 
+Then a Monte Carlo test was run on $100$ realizations from the Neuman-Scott event RF. First the L-interaction function was calculated by equation \ref{eq:L_function} for each realization. The result of which is shown in Figure \ref{fig:gen_ns_l}.
+
 \begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/gen_ns_l.pdf}
+    \includegraphics[scale=0.65]{figures/gen_ns_l.pdf}
     \caption{}
     \label{fig:gen_ns_l}
 \end{figure}
+
+From the L-interaction function for the realizations the $0.05$ and $0.95$ quantiles were calculated and compared to the L-interaction function of the redwood tree data. 
+
 \begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/ns_quant1.pdf}
+    \includegraphics[scale=0.65]{figures/ns_quant1.pdf}
     \caption{}
     \label{fig:ns_quant1}
 \end{figure}
+
 \begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/ns_quant2.pdf}
+    \includegraphics[scale=0.65]{figures/ns_quant2.pdf}
     \caption{}
     \label{fig:ns_quant2}
 \end{figure}
