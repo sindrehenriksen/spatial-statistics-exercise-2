@@ -35,9 +35,9 @@ ggsave("../figures/numb_clusters.pdf", plot = redwood.opti.cluster.plot, device 
        dpi = 300, limitsize = TRUE)
 
 # partitioning clusters k-medoids
-km.res <- kmeans(redwood_df, 3, nstart = 3)
+km.res <- kmeans(redwood_df, 7, nstart = 7)
 redwood.cluster.plot <-fviz_cluster(km.res, data = redwood_df,
-                                    ellipse.type = "norm",
+                                    ellipse.type = "convex",
                                     palette = "Set1",
                                     stand = FALSE,
                                     geom = "point",
@@ -51,7 +51,7 @@ ggsave("../figures/redwood_cluster_partitioning.pdf", plot = redwood.cluster.plo
 redwood.cluster <- redwood.cluster.plot$data
 
 # children position gaussian distribution
-sigma_c <- mean(km.res$withinss/(km.res$size-1))
+sigma_c <- mean(km.res$tot.withinss/km.res$size)
 
 # number children poisson distributed
 lambda_c <- mean(km.res$size)
