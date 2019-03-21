@@ -21,23 +21,20 @@ ggplot(data = redwood_df, aes(x=x, y=y)) +
   ggtitle("Redwood data") +
   theme(plot.title = element_text(hjust = 0.5))
 
-# using 30 different method of determine number of clusters
 # finding optimal number of clusters
-pdf(file = NULL)
-nb <- NbClust(redwood_df, distance = "euclidean", min.nc = 2,
-              max.nc = 10, method = "complete", index ="all")
-dev.off()
-redwood.opti.cluster.plot <- fviz_nbclust(nb) + theme_minimal()
+nb <-fviz_nbclust(redwood_df, kmeans,
+             method = "gap_stat")
+
+redwood.opti.cluster.plot <- nb + theme_minimal()
 redwood.opti.cluster.plot
-#save plot
+
 ggsave("../figures/numb_clusters.pdf", plot = redwood.opti.cluster.plot, device = NULL, path = NULL,
        scale = 1, width = 5.5, height = 5.5, units = "in",
        dpi = 300, limitsize = TRUE)
-
 # partitioning clusters k-medoids
-km.res <- kmeans(redwood_df, 7, nstart = 7)
+km.res <- kmeans(redwood_df, 7, nstart = 25)
 redwood.cluster.plot <-fviz_cluster(km.res, data = redwood_df,
-                                    ellipse.type = "convex",
+                                    ellipse.type = "norm",
                                     palette = "Set1",
                                     stand = FALSE,
                                     geom = "point",
@@ -84,7 +81,7 @@ neuman_scott <- function(lambda_c,sigma_c,lambda_m){
   return(data.frame(x = x[1:k],y = y[1:k],cluster=cluster[1:k]))
 }
 
-x.ns<-neuman_scott(lambda_c,sigma_c,9)
+x.ns<-neuman_scott(lambda_c,sigma_c,7)
 cluster.event.plot <- ggplot(data = x.ns,aes(x=x, y=y)) + 
   geom_point(aes(colour = factor(cluster))) +
   scale_colour_manual(values=rep(cbPalette, length = length(x.ns$x)))+
