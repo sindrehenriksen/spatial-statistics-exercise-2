@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In this exercise we consider the Neuman-Scott (Mother-Child) event RF model. Using this model the mother-model has a stationary Poisson RF with intensity $\lambda_M$. There exists $k^M$ mothers, and for each mother there exist a number of children distributed according to a pdf $p(k^c)$ around the mother position $\vect{X}_j^M$ and is positionally distributed according to the conditional pdf $p(\vect{x} \given \vect{x}_j^M)$. The child position is then accepted to ensure that $\vect{x} \in \mathrm{D}$. The set of samples generated from a Neuman-Scott event RF is represented by $\matr{X}_D^{NS}:\{\vect{x}_1,\vect{x}_2,...,\vect{x}_{k_D}\}:\{\vect{x}_{ji};j=1,2,...,k_D^M:i = 1,2,...,k_D^c\};\vect{x}_j,\vect{x}_{ji}\in D$ with $k_d = \sum_j k_{D_j}^c$ given by the distribution in Equation \ref{eq:neumanscott}.
 \begin{equation}
-    \begin{array}{rcl}
+    \begin{array}{lll}
         X_D^{NS} & \sim & p(\vect{x}_{ji}; j = 1,2,...,k_D^M; i =1,2,...,k_{D_j}^c) \\
          & = & \prod\limits_{j=1}^{k_D^M}\left[\prod\limits_{i=1}^{k_{D_j}}\frac{ \vect{I}(\vect{x}_{ji}\in \mathrm{D})p(\vect{x}_{ji}\given\vect{x}_j^M)}{ P(\mathrm{D}\given\vect{x}_j^M)}\right]\times p(k_{D_j}^c\given k_j^c,\vect{x}_j^M)p(k_j^c)\times \frac{p(k_D^M)}{|D|^{k_D^M}} \\
          & = & \prod\limits_{j=1}^{k_D^M}\left[\prod\limits_{i=1}^{k_{D_j}}\frac{ \vect{I}(\vect{x}_{ji}\in \mathrm{D}) \phi_2(\vect{x}_{ji};\vect{x}_j^M,\sigma_c^2\matr{I}_2)}{ \Phi_2(D;\vect{X}_j^M,\sigma_c^2\matr{I}_2 )}\right] \\
