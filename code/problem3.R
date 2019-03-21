@@ -101,7 +101,7 @@ ggsave("../figures/cluster_event_rf.pdf", plot = cluster.event.plot, device = NU
 
 # -----------------------------------------------------------------------------
 # Monte Carlo test
-set.seed(123)
+set.seed(2)
 
 #Condition on number of observed points
 
