@@ -31,7 +31,7 @@ redwood.opti.cluster.plot <- fviz_nbclust(nb) + theme_minimal()
 redwood.opti.cluster.plot
 #save plot
 ggsave("../figures/numb_clusters.pdf", plot = redwood.opti.cluster.plot, device = NULL, path = NULL,
-       scale = 1, width = 4, height = 4, units = "in",
+       scale = 1, width = 5.5, height = 5.5, units = "in",
        dpi = 300, limitsize = TRUE)
 
 # partitioning clusters k-medoids
@@ -45,7 +45,7 @@ redwood.cluster.plot <-fviz_cluster(km.res, data = redwood_df,
 redwood.cluster.plot
 # save plot
 ggsave("../figures/redwood_cluster_partitioning.pdf", plot = redwood.cluster.plot, device = NULL, path = NULL,
-       scale = 1, width = 4, height = 4, units = "in",
+       scale = 1, width = 5.5, height = 5.5, units = "in",
        dpi = 300, limitsize = TRUE)
 
 redwood.cluster <- redwood.cluster.plot$data
@@ -96,7 +96,7 @@ cluster.event.plot <- ggplot(data = x.ns,aes(x=x, y=y)) +
   ylim(0, 1)
 cluster.event.plot
 ggsave("../figures/cluster_event_rf.pdf", plot = cluster.event.plot, device = NULL, path = NULL,
-       scale = 1, width = 4, height = 4, units = "in",
+       scale = 1, width = 5.5, height = 5.5, units = "in",
        dpi = 300, limitsize = TRUE)
 
 # -----------------------------------------------------------------------------
