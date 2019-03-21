@@ -1,7 +1,7 @@
 \section{}
 \label{sec:problem3}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In this exercise we consider the Neuman-Scott (Mother-Child) event RF model. Using this model the mother-model has a stationary Poisson RF with intensity $\lambda_M$. There exists $k^M$ mothers, and for each mother there exist a number of children distributed according to a pdf $p(k^c)$ around the mother position $\vect{X}_j^M$ and is positionally distributed according to the conditional pdf $p(\vect{x} \given \vect{x}_j^M)$. The child position is then accepted to ensure that $\vect{x} \in \mathrm{D}$. The set of samples generated from a Neuman-Scott event RF is represented by $\matr{X}_D^{NS}:\{\vect{x}_1,\vect{x}_2,...,\vect{x}_{k_D}\}:\{\vect{x}_{ji};j=1,2,...,k_D^M:i = 1,2,...,k_D^c\};\vect{x}_j,\vect{x}_{ji}\in D$ with $k_d = \sum_j k_{D_j}^c$ given by the distribution in Equation \ref{eq:neumanscott}.
+In this exercise we consider the Neuman-Scott (Mother-Child) event RF model. Using this model the mother-model has a stationary Poisson RF with intensity $\lambda_M$. There exists $k^M$ mothers, and for each mother there exist a number of children distributed according to a pdf $p(k^c)$ around the mother position $\vect{X}_j^M$, which are positionally distributed according to the conditional pdf $p(\vect{x} \given \vect{x}_j^M)$. The child position is then accepted to ensure that $\vect{x} \in \mathrm{D}$. The set of samples generated from a Neuman-Scott event RF is represented by $\matr{X}_D^{NS}:\{\vect{x}_1,\vect{x}_2,...,\vect{x}_{k_D}\}:\{\vect{x}_{ji};j=1,2,...,k_D^M:i = 1,2,...,k_D^c\};\vect{x}_j,\vect{x}_{ji}\in D$ with $k_d = \sum_j k_{D_j}^c$ given by the distribution in Equation \ref{eq:neumanscott}.
 \begin{equation}
     \begin{array}{lll}
         X_D^{NS} & \sim & p(\vect{x}_{ji}; j = 1,2,...,k_D^M; i =1,2,...,k_{D_j}^c) \\
@@ -12,30 +12,40 @@ In this exercise we consider the Neuman-Scott (Mother-Child) event RF model. Usi
          \end{array}
     \label{eq:neumanscott}
 \end{equation}
-From this we can see that the child position model is given by $\vect{x} \sim \Phi(\mathrm{D};\vect{x}_j^M, \sigma_c^2\matr{I}_2)$. Then the model parameters are $\vect{\theta}_{pNS} = \left[\lambda_M,\sigma_c^2,p(\cdot)\right]$, where $\lambda_M$ is the intensity of the number of mothers, $sigma_c^2$ is the deviation of the distance a child is from the mother, and $p(\cdot)$ is the distribution of the number of children around a mother. 
+From this we can see that the child position model is given by $\vect{x} \sim \Phi(\mathrm{D};\vect{x}_j^M, \sigma_c^2\matr{I}_2)$. Then the model parameters are $\vect{\theta}_{pNS} = \left[\lambda_M,\sigma_c^2,p(\cdot)\right]$, where $\lambda_M$ is the intensity of the number of mothers, $\sigma_c^2$ is the deviation of the distance from a child to its mother, and $p(\cdot)$ is the distribution of the number of children around a mother.
 
-To find the parameter $\lambda_M$ a cluster analysis was done. Testing the redwood tree data against $30$ different algorithm for determining number of clusters in our data, or in other words number of mothers. Then a majority vote of the $30$ was thrown and the optimal number was $3$. The result of this is shown in Figure \ref{fig:numb_clust}, which gives us $\lambda_M = 3$. 
+To find the parameter $\lambda_M$ a cluster analysis is performed. We run 30 different algorithms on the redwood tree data to determine number of clusters in our data, or in other words the number of mothers. A majority vote results in 3 as the optimal number of clusters. The results of each algorithm is shown in Figure \ref{fig:numb_clust}, which gives, as mentioned, $\lambda_M = 3$.
+
+After some investigation and comparison between the L-interaction function of the redwood data and the quantiles from the L-interaction function of the realizations of the Neuman-Scott Event RF, shown in Figure \ref{fig:ns_quant1}, we could see that the $\lambda_M$ needed a different value. From this we chose the second optimal number of clusters which was $\lambda_M = 9$. 
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.95]{figures/numb_clusters.pdf}
     \caption{}
     \label{fig:numb_clust}
 \end{figure}
-To further analyse the redwood three data a \textit{kmeans}-clustering was ran to partition the data points as children in $3$ clusters(mothers) found previously. The results is shown in Figure \ref{fig:cluster_part}. 
+
+To further analyze the redwood tree data a \textit{kmeans}-clustering is run to partition the data points as children in the $7$ clusters (mothers) found previously. The results is shown in Figure \ref{fig:cluster_part}. 
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.95]{figures/redwood_cluster_partitioning.pdf}
     \caption{}
     \label{fig:cluster_part}
 \end{figure}
-As for the third parameter $p(\cdot)$, the distribution of number of children in a cluster, was chosen to be a Poisson distribution. This means that the parameter of interest is the intensity $\lambda_C$. After the partitioning was found, the number of children in each cluster was known. This gives $\lambda_c = \frac{\sum\limits_{j = 1} ^{k^M} k_j^c}{k^M}$, which is the mean of the number of children in each cluster. And as for the positionally distribution around the mother the parameter $\sigma_c^2$ is needed. This is given by the sum of squares within a cluster $SS_j; j\in 1,2,...,k^M$ and the number of children in a cluster $k_j^c$. Given by the equation $\sigma_c^2 = \frac{\sum\limits_{j = 1}^{k_j^M}ss_j/(k_j^c-1)}{k_D}$. Now we have all the model parameters and a simulation was ran to find one realization of the Neuman-Scott event RF, shown in the Figure \ref{fig:cluster_event_rf}.
+
+The distribution of number of children in a cluster, $p(\cdot)$, was chosen to be a binomial distribution. The maximum number of children to a mother was chosen to be $k_D$, the number of data points in the redwood data, and the probability of a child being child to the mother $k_j^M;j=1,2,...k^M$ is chosen to be $p(k_j^c \given k_j^M) = 1/k_j^M$. By this the number of children in a cluster is distributed as $k_j^c \sim \bin(k_D,1/k_j^M)$. For the positional distribution around the mother the parameter $\sigma_c^2$ is needed. This is given by the sum of squares within a cluster $SS_j; j\in 1,2,...,k^M$ and the number of children in a cluster $k_j^c$. Given by the equation $\sigma_c^2 = \frac{\sum\limits_{j = 1}^{k_j^M}ss_j/(k_j^c-1)}{k_D}$.
+
+Now we have all the model parameters. Next a simulation is run to find one realization of the Neuman-Scott event RF, shown in Figure \ref{fig:cluster_event_rf}.
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.95]{figures/cluster_event_rf.pdf}
     \caption{}
     \label{fig:cluster_event_rf}
 \end{figure}
-Then a Monte Carlo test was run on $100$ realizations from the Neuman-Scott event RF. First the L-interaction function was calculated by equation \ref{eq:L_function} for each realization. The result of which is shown in Figure \ref{fig:gen_ns_l}.
+
+Finally a Monte Carlo test is run on $100$ realizations from the Neuman-Scott event RF. The L-interaction function is calculated using Equation \eqref{eq:L_function} for each realization. The result is shown in Figure \ref{fig:gen_ns_l}.
 
 \begin{figure}
     \centering
