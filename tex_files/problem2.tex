@@ -75,7 +75,7 @@ The posterior discretized  event-count model is given by
 %
 By independence, the density of $k_i$, $i = 1, \dots, 900$, is given by simply removing the product symbol in the last line of \eqref{eq:p2_posterior}. I.e. $(k_i - d_i \given d_i, \lambda_k) \sim \Pois(100\lambda_k[1-\alpha_i])$. This makes sense intuitively; $\E(k_i - d_i \given d_i, \lambda_k) = 100\lambda_k(1-\alpha_i) = \E(k_i) - \alpha_i\E(k_i)$, i.e. the expected difference between $k_i$ and $d_i$ is just the expected number of pine trees less the observation probability multiplied by the expected number of trees. Thus the posterior model is a Poisson RF model.
 
-10 realizations of the associated approximate event-location model are generated in a similar way as in c). We simulate from the 900 from Poisson distributions with intensities $100\lambda_k(1-\alpha_i)$ and add $d_i$, $i = 1, \dots, 900$. The results are illustrated in Figure~\ref{fig:p2_posterior_sims}.
+10 realizations of the associated approximate event-location model are generated in a similar way as in c). We simulate from the 900 Poisson distributions with intensities $100\lambda_k(1-\alpha_i)$ and add $d_i$, $i = 1, \dots, 900$. The results are illustrated in Figure~\ref{fig:p2_posterior_sims}.
 
 \begin{figure}
     \centering
