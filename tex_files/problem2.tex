@@ -2,9 +2,9 @@
 \label{sec:problem2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-An area of size $(300 \times 300) \, \si{\meter^2}$ containing a pine tree forest is considered, and the actual locations of the pine trees are to be assessed. The pine tree locations are observed from a satellite by remote sensing, and due to partly cloudy weather the observation probabilities for individual trees vary across the area.
+An area $\mathrm{D}$ of size $(300 \times 300) \, \si{\meter^2}$ containing a pine tree forest is considered, and the actual locations of the pine trees are to be assessed. The pine tree locations are observed from a satellite by remote sensing, and due to partly cloudy weather the observation probabilities for individual trees vary across the area.
 
-The area is discretized into a regular $(30 \times 30)$-grid $L$ with grid unit size $\SI{100}{\meter^2}$. The true, but unknown, number of pine trees located in each grid unit is \newline $\{k(\vect{x}) \ssep \vect{x} \in L\}$. The probabilities for observing a pine tree in each grid unit is represented by $\{\alpha(\vect{x}) \ssep \vect{x} \in L\}$. 
+The area is discretized into a regular $(30 \times 30)$-grid $\mathrm{L}$ with grid unit size $\SI{100}{\meter^2}$. The true, but unknown, number of pine trees located in each grid unit is \newline $\{k(\vect{x}) \ssep \vect{x} \in \mathrm{L}\}$. The probabilities for observing a pine tree in each grid unit is represented by $\{\alpha(\vect{x}) \ssep \vect{x} \in \mathrm{L}\}$. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{a)}
@@ -44,13 +44,13 @@ We assume a priori that the distribution of pine trees is according to a station
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{c)}
-We wish to estimate the intensity $\lambda_k$ based on the observations and observation probabilities. An estimate of the total number of trees on the grid i $\sum_{i=1}^n d_i / \alpha_i$, and so an estimate of $\lambda_k$ is
+We wish to estimate the intensity $\lambda_k$ based on the observations and observation probabilities. An estimate of the total number of trees on the grid is $\sum_{i=1}^n d_i / \alpha_i$, and so an estimate of $\lambda_k$ is
 %
 \begin{equation*}
-    \hat{\lambda_k} = \frac{\sum_{i=1}^n d_i / \alpha_i}{n} \approx 0.01016 \, .
+    \hat{\lambda}_k = \frac{\sum_{i=1}^n d_i / \alpha_i}{|\mathrm{D}|} \approx 0.01016 \, .
 \end{equation*}
 %
-There are (at least) two equivalent ways to simulate event counts and approximate event locations from the Poisson random field on $L$ with intensity $\hat{\lambda}$. One is to simulate from a Poisson distribution with parameter $|L|\hat{\lambda} = 90000\hat{\lambda}$ to get a total count $m$ and uniformly distribute the $m$ points over the grid. The other way is to simulate 900 times from a Poisson distribution with intensity $100\hat{\lambda}$ to get a vector of counts $\vect{m}$ corresponding to the 900 grid nodes. The methods are equivalent since we assume the field is stationary.
+There are (at least) two equivalent ways to simulate event counts and approximate event locations from the Poisson random field on $L$ with intensity $\hat{\lambda}$. One is to simulate from a Poisson distribution with parameter $|\mathrm{D}|\hat{\lambda} = 90000\hat{\lambda}$ to get a total count $m$ and uniformly distribute the $m$ points over the grid. The other way is to simulate 900 times from a Poisson distribution with intensity $100\hat{\lambda}$ to get a vector of counts $\vect{m}$ corresponding to the 900 grid nodes. The methods are equivalent since we assume the field is stationary.
 
 We chose the latter method for simplicity (when programming). The results are displayed in Figure~\ref{fig:p2_prior_sims}.
 
@@ -86,9 +86,9 @@ By independence, the density of $k_i$, $i = 1, \dots, 900$, is given by removing
     \label{fig:p2_posterior_sims}
 \end{figure}
 
-Qualitatively there does not seem to be much of a difference between the prior and the posterior realizations. Looking closely one can see that in the posterior realizations (with observations $\vect{d}$ added), the points where trees are observed always have a at least the observed value - obviously. There don't seem to be any indications that the random field is not truly stationary, however. If we didn't add $\vect{d}$, the plots would indicate more pine trees towards low $x$ and $y$ values. This is simply because it is more likely that there are unobserved trees in that area.
+Qualitatively there does not seem to be much of a difference between the prior and the posterior realizations. Looking closely one can see that in the posterior realizations (with observations $\vect{d}$ added), the points where trees are observed always have at least the observed value. There doesn't seem to be any indication that the discretized prior Poisson random field $\vect{k}$ is not truly stationary, however. If we didn't add $\vect{d}$, the plots would indicate more pine trees towards low $x$ and $y$ values. But this might just be because it is more likely that there are unobserved trees in that area. The discretized posterior Poisson random field $[\vect{k} \given \vect{d}]$ is not stationary; observe e.g. that $\E[k_i \given d_i]$ is not constant over the grid.
 
-Figure~\ref{fig:p2_posterior_mean} shows a plot of the posterior mean with $\vect{d}$ added. This illustrates the same points discussed in the previous paragraph; in short we know more about the number of trees in the area with higher observation probabilities.
+Figure~\ref{fig:p2_posterior_mean} shows a plot of the posterior mean with $\vect{d}$ added. This illustrates the same points discussed in the previous paragraph; in short we know more about the distribution of trees in the area with higher observation probabilities.
 
 \begin{figure}
     \centering
