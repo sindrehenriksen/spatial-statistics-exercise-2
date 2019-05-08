@@ -41,7 +41,7 @@ ggplot(data = cells_df, aes(x=x, y=y)) +
 
 
 #ggsave("../figures/prob1_cells_points.pdf", plot = last_plot(), device = NULL, path = NULL,
-#       scale = 1, width = 3, height = 3, units = "in",
+#       scale = 1, width = 4, height = 4, units = "in",
 #      dpi = 300, limitsize = TRUE)
 
 #Display redwood data
@@ -54,7 +54,7 @@ ggplot(data = redwood_df, aes(x=x, y=y)) +
   theme(plot.title = element_text(hjust = 0.5))
 
 #ggsave("../figures/prob1_redwood_points.pdf", plot = last_plot(), device = NULL, path = NULL,
-#       scale = 1, width = 3, height = 3, units = "in",
+#       scale = 1, width = 4, height = 4, units = "in",
 #      dpi = 300, limitsize = TRUE)
 
 #Display pines data
@@ -66,9 +66,9 @@ ggplot(data = pines_df, aes(x=x, y=y)) +
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5))
 
-ggsave("../figures/prob1_pines_points.pdf", plot = last_plot(), device = NULL, path = NULL,
-       scale = 1, width = 3, height = 3, units = "in",
-       dpi = 300, limitsize = TRUE)
+#ggsave("../figures/prob1_pines_points.pdf", plot = last_plot(), device = NULL, path = NULL,
+#       scale = 1, width = 4, height = 4, units = "in",
+#       dpi = 300, limitsize = TRUE)
 
 ###############################################################
 ###############################################################
