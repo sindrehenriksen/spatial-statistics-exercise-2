@@ -148,7 +148,7 @@ ggplot(data = L_all, aes(x=t, y=L, col = Data)) +
   
 
 #ggsave("../figures/prob1_L_empirical.pdf", plot = last_plot(), device = NULL, path = NULL,
-#       scale = 1, width = 5.5, height = 4, units = "in",
+#       scale = 1, width = 5.5, height = 8/3, units = "in",
 #       dpi = 300, limitsize = TRUE)
 ###############################################################
 ###############################################################
