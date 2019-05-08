@@ -60,7 +60,7 @@ To further analyze the redwood tree data a \textit{kmeans}-clustering is run to 
 
 The distribution of number of children in a cluster, $p(\cdot)$, is chosen to be a binomial distribution. The maximum number of children in a cluster is the number of data points in the redwood data $k_D$, and the probability of a child being child to the mother $k_j^M;j=1,2,...k^M$ is chosen to be $p(k_j^c \given k_j^M) = 1/k_j^M$. By this the number of children in a cluster is distributed as $k_j^c \sim \bin(k_D,1/k_j^M)$. For the positional distribution around the mother the parameter $\sigma_c^2$ is needed. This is given by the total sum of squares within a cluster $TSS; j\in 1,2,...,k^M$ and the number of children in a cluster $k_j^c$, s.t. $\sigma_c^2 = \mathrm{mean}(TSS/k_j^c)$.
 
-By the cluster analysis the model parameters was set to be $\vect{\Theta}_{pNS} = [\lamda_M = $. Next a simulation is run to find one realization of the Neuman-Scott event RF, shown in Figure \ref{fig:cluster_event_rf}.
+By the cluster analysis the model parameters was set to be $\vect{\Theta}_{pNS} = [\lamda_M = 7, \sigma_c^2 = 0.068, p(\cdot) = binom(k_\textrm{D},1/k_j^M)]$. Next a simulation is run to find one realization of the Neuman-Scott event RF, shown in Figure \ref{fig:cluster_event_rf}.
 
 \begin{figure}
     \centering
