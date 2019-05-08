@@ -6,13 +6,13 @@ On the biological cell data we want to model a repulsive event RF with a Single-
 %
 \begin{equation}
     \begin{array}{rcl}
-        \left[\matr{X}_D^S \given k_D = k\right] & \sim & p(\vect{x}_1,\vect{x}_2,...,\vect{x}_k \given k_D = k) \\
+        \left[\mathbb{X}_\textrm{D}^S \given k_\textrm{D} = k\right] & \sim & p(\vect{x}_1,\vect{x}_2,...,\vect{x}_k \given k_\textrm{D} = k) \\
          & = & \mathrm{const} \times \prod\limits_{i,j\in \{1,2,...k\}} exp\{-\phi(\vect{x}_i-\vect{x}_j)\}
     \end{array}.
     \label{eq:straureal}
 \end{equation}
 %
-Then let the distance be $\tau_{ij} = |\vect{\tau}_{ij}| \in \R_\oplus; \vect{\tau}_{ij} = \vect{x}_i - \vect{x}_j$, where $\phi(\tau)$ is given by equation 
+Then let the distance be $\tau_{ij} = |\vect{\tau}_{ij}| \in \reals_\oplus; \vect{\tau}_{ij} = \vect{x}_i - \vect{x}_j$, where $\phi(\tau)$ is given by equation 
 \begin{equation}
     \phi(\tau) = \begin{cases}
                     \phi_0; & 0 \leq \tau \leq \tau_0\\
@@ -20,7 +20,7 @@ Then let the distance be $\tau_{ij} = |\vect{\tau}_{ij}| \in \R_\oplus; \vect{\t
                 \end{cases},
     \label{eq:interfunction}
 \end{equation}
-where $\tau_0 \in R_\oplus$ and $\phi_0,\phi_1 \in R_+$. This gives the model parameters for the Strauss-model $\vect{\theta} _{pS\given k} = [\tau_0,\phi_0,\phi_1]$. For $\tau_0$ the minimum distance between the points in the cells data was chosen $\tau_0 = \min\limits_{\{i,j\in k;i\neq j\}} |\vect{x}_i-\vect{x}_j|$. The other parameters was chosen to fit the quantiles of L-interaction function of the realization from the Strauss Event RF to the L-interaction function of the cells data, the result of which is shown in Figure \ref{fig:strauss_quant1} and  Figure \ref{fig:strauss_quant2}. From this the parameters was chosen to be $\phi_0 = 7$ and $\phi_1 = 90$. From this knowledge realizations can be generated, and one is displayed in Figure \ref{fig:repulsive_event_rf}.
+where $\tau_0 \in R_\oplus$ and $\phi_0,\phi_1 \in R_+$. This gives the model parameters for the Strauss-model $\vect{\theta} _{pS\given k} = [\tau_0,\phi_0,\phi_1]$. The minimum distance between the points in the cells data, $\tau_0$, is calculated by $\tau_0 = \min\limits_{\{i,j\in k;i\neq j\}} |\vect{x}_i-\vect{x}_j|$. The other parameters is chosen to fit the quantiles of L-interaction function of the realizations from the Strauss Event RF to the L-interaction function of the cells data. An initial guess on the model parameter is done, then compared and changed until a fit is made. This yielding the parameters  $\phi_0 = 7$ and $\phi_1 = 90$ and the minimum distance was calculated to be $\tau_0 = 0.0836$. From this knowledge realizations can be generated, and one is displayed in Figure \ref{fig:repulsive_event_rf}. The comparison between the L-interaction functions of the quantiles of the cell data and the realizations from the Strauss Event RF is shown in Figure \ref{fig:strauss_quant1} and  Figure \ref{fig:strauss_quant2}. 
 \begin{figure}
     \centering
     \includegraphics[scale=0.95]{figures/repulsive_event_rf.pdf}
