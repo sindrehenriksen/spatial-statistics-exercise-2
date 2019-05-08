@@ -319,6 +319,8 @@ pines1 = ggplot(long_L,
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         axis.line = element_line(), legend.position = "none") +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   ggtitle("Generated L-functions: Pines") +
   xlab("t")+
   ylab("L")
@@ -330,6 +332,8 @@ pines2 = ggplot(data = pines.quantiles) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         axis.line = element_line(), legend.position = "none") +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   ggtitle("Pines L-function with Poisson RF quantiles") +
   xlab("t")+
   ylab("L")
@@ -357,6 +361,8 @@ cells3 = ggplot(data = cells.quantiles2[1:l,]) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         axis.line = element_line(), legend.position = "none") +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   ggtitle("Cells L-function with Poisson RF quantiles") +
   xlab("t")+
   ylab("L")
@@ -368,6 +374,8 @@ redwood3 = ggplot(data = redwood.quantiles2[1:l,]) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         axis.line = element_line(), legend.position = "none") +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   ggtitle("Redwood L-function with Poisson RF quantiles") +
   xlab("t")+
   ylab("L")
@@ -375,5 +383,5 @@ redwood3 = ggplot(data = redwood.quantiles2[1:l,]) +
 plot.quantiles2 = grid.arrange(grobs = list(cells3, redwood3), ncol = 1)
 
 #ggsave("../figures/prob1_quantiles2.pdf", plot = plot.quantiles2, device = NULL, path = NULL,
-#       scale = 1, width = 5.5, height = 4*2, units = "in",
+#       scale = 1, width = 5.5, height = 4*2*2/3, units = "in",
 #      dpi = 300, limitsize = TRUE)
