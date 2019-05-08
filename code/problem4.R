@@ -50,18 +50,24 @@ straussEventRF <- function(k,model.param){
   yd = runif(k)
   x0 = xd
   y0 = yd
+  x1 = c(xd[1])
+  y1 = c(yd[1])
+  trace.dist = c(min(dist(data.frame(x=xd,y=yd))))
   acceptance.prob = numeric(M)
   for (i in seq(1,M)){
     u = round(runif(1,1,k))
     try_x = runif(1)
     try_y = runif(1)
-    acceptance.prob[i] <- acceptanceProb(try_x,try_y,u,xd,yd,model.param)
+    acceptance.prob[i] = acceptanceProb(try_x,try_y,u,xd,yd,model.param)
     if (runif(1)<acceptance.prob[i]){
       xd[u] = try_x
       yd[u] = try_y
+      trace.dist = c(trace.dist, min(dist(data.frame(x=xd,y=yd))))
+      x1 = c(x1,xd[1])
+      y1 = c(y1,yd[1])
     }
   }
-  return(list(df = data.frame(x=xd,y=yd,x0 = x0, y0 = y0),accep.prob = acceptance.prob))
+  return(list(df = data.frame(x=xd,y=yd,x0 = x0, y0 = y0),accep.prob = acceptance.prob,trace.dist = trace.dist,df2 = data.frame(x = x1,y = y1)))
 }
 k = length(cells_df$x)
 
@@ -78,14 +84,34 @@ ggplot(enframe(repulsive.event.rf$accep.prob))+
 repulsive.event.plot<-ggplot(repulsive.event.rf$df) + 
   geom_point(aes(x=x,y=y))+
   ggtitle("Strauss Event RF") +
+  theme_bw() + 
   theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
 repulsive.event.plot
 ggsave("../figures/repulsive_event_rf.pdf", plot = repulsive.event.plot, device = NULL, path = NULL,
        scale = 1, width = 5.5, height = 5.5, units = "in",
        dpi = 300, limitsize = TRUE)
+
 ggplot(enframe(repulsive.event.rf$accep.prob))+
   geom_point(aes(x = name, y= value))
 
+ggplot(repulsive.event.rf$df2,aes(x=x,y=y)) + 
+  geom_line()
+
+repulsive.trace.plot<-ggplot(enframe(repulsive.event.rf$trace.dist)) + 
+  geom_line(aes(x= name, y = value)) + 
+  geom_hline(yintercept = model.param$tau_0, color = "red")+
+  ggtitle("Trace plot of minimum distance") + 
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none",
+        axis.line = element_line(),axis.title.x = element_blank() )+ 
+  scale_y_continuous(name = "minimum distance")
+repulsive.trace.plot
+ggsave("../figures/repulsive_trace_rf.pdf", plot = repulsive.trace.plot, device = NULL, path = NULL,
+       scale = 1, width = 5.5, height = 5.5, units = "in",
+       dpi = 300, limitsize = TRUE)
+
+ggplot(repulsive.event.rf$df) + 
+  geom_point(aes(x=x0,y=y0))
 set.seed(2)
 
 #Condition on number of observed points
