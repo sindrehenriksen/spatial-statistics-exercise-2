@@ -85,6 +85,11 @@ L_plot[[1]] = ggplot(data = L_cells_df, aes(x=t, y=L)) +
   geom_abline(slope = 1, intercept = 0) +
   geom_path(col = 'red') + 
   ggtitle("L-interaction function for cells") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line()) +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   theme(plot.title = element_text(hjust = 0.5))
 
 
@@ -97,6 +102,11 @@ L_plot[[2]] = ggplot(data = L_redwood_df, aes(x=t, y=L)) +
   geom_abline(slope = 1, intercept = 0) +
   geom_path(col = 'red') + 
   ggtitle("L-interaction function for redwood trees") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line()) +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   theme(plot.title = element_text(hjust = 0.5))
 
 
@@ -109,6 +119,11 @@ L_plot[[3]] = ggplot(data = L_pines_df, aes(x=t, y=L)) +
   geom_abline(slope = 1, intercept = 0) +
   geom_path(col = 'red') + 
   ggtitle("L-interaction function for pine trees") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line()) +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   theme(plot.title = element_text(hjust = 0.5))
 
 #Empirical and theoretical L
@@ -122,9 +137,15 @@ L_emp_theor = grid.arrange(grobs = L_plot, ncol = 1)
 L_all = rbind(L_cells_df, L_redwood_df, L_pines_df)
 
 ggplot(data = L_all, aes(x=t, y=L, col = Data)) + 
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line()) +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   geom_path() + 
-  ggtitle("L-interaction functions") +
-  theme(plot.title = element_text(hjust = 0.5))
+  ggtitle("L-interaction functions")
+
+  
 
 #ggsave("../figures/prob1_L_empirical.pdf", plot = last_plot(), device = NULL, path = NULL,
 #       scale = 1, width = 5.5, height = 4, units = "in",
@@ -219,20 +240,28 @@ cells1 = ggplot(long_L,
   geom_line(data = cells.quantiles, aes(y = upper, x = L_df$t), 
             inherit.aes = FALSE, col = 'black')+
   #geom_line(data = L_cells_df, aes(y = L), col = 'black' )+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line(), legend.position = "none") +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   ggtitle("Generated L-functions: Cells") +
   xlab("t")+
-  ylab("L") +
-  theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
+  ylab("L")
 
 #melt(data.frame(L_cells_df$t, L_cells_df$L, cells.quantiles), id = 't')
 cells2 = ggplot(data = cells.quantiles) +
   geom_line(aes(y = lower, x = L_df$t), col = 'black')+
   geom_line(aes(y = upper, x = L_df$t), col = 'black')+
   geom_line(data = L_cells_df, aes(y = L, x = t), col = 'red' )+
-  ggtitle("Cells L-function with Poisson RF 0.05 and 0.95 quantiles") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line(), legend.position = "none") +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
+  ggtitle("Cells L-function with Poisson RF quantiles") +
   xlab("t")+
-  ylab("L") +
-  theme(plot.title = element_text(hjust = 0.5))
+  ylab("L")
 ###########################
 #Redwood:
 L_df = as.data.frame(L_samps_redwood_L)
@@ -249,19 +278,27 @@ redwood1 = ggplot(long_L,
   geom_line(data = redwood.quantiles, aes(y = upper, x = L_df$t), 
             inherit.aes = FALSE, col = 'black')+
   #geom_line(data = L_redwood_df, aes(y = L), col = 'black' )+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line(), legend.position = "none") +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
   ggtitle("Generated L-functions: Redwood") +
   xlab("t")+
-  ylab("L") +
-  theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
+  ylab("L")
 
 redwood2 = ggplot(data = redwood.quantiles) +
   geom_line(aes(y = lower, x = L_df$t), col = 'black')+
   geom_line(aes(y = upper, x = L_df$t), col = 'black')+
   geom_line(data = L_redwood_df, aes(y = L, x = t), col = 'red' )+
-  ggtitle("Redwood L-function with Poisson RF 0.05 and 0.95 quantiles") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line()) +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0))+
+  ggtitle("Redwood L-function with Poisson RF quantiles") +
   xlab("t")+
-  ylab("L") +
-  theme(plot.title = element_text(hjust = 0.5))
+  ylab("L")
 
 ###########################
 #Pines:
@@ -279,19 +316,23 @@ pines1 = ggplot(long_L,
   geom_line(data = pines.quantiles, aes(y = upper, x = L_df$t), 
             inherit.aes = FALSE, col = 'black')+
   #geom_line(data = L_pines_df, aes(y = L), col = 'black' )+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line(), legend.position = "none") +
   ggtitle("Generated L-functions: Pines") +
   xlab("t")+
-  ylab("L") +
-  theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
+  ylab("L")
 
 pines2 = ggplot(data = pines.quantiles) +
   geom_line(aes(y = lower, x = L_df$t), col = 'black')+
   geom_line(aes(y = upper, x = L_df$t), col = 'black')+
   geom_line(data = L_pines_df, aes(y = L, x = t), col = 'red' )+
-  ggtitle("Pines L-function with Poisson RF 0.05 and 0.95 quantiles") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line(), legend.position = "none") +
+  ggtitle("Pines L-function with Poisson RF quantiles") +
   xlab("t")+
-  ylab("L") +
-  theme(plot.title = element_text(hjust = 0.5))
+  ylab("L")
 
 plot.samples = grid.arrange(grobs = list(cells1, redwood1, pines1), ncol = 1)
 
@@ -301,9 +342,9 @@ plot.samples = grid.arrange(grobs = list(cells1, redwood1, pines1), ncol = 1)
 
 plot.quantiles = grid.arrange(grobs = list(cells2, redwood2, pines2), ncol = 1)
 
-ggsave("../figures/prob1_quantiles.pdf", plot = plot.quantiles, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 4*2, units = "in",
-      dpi = 300, limitsize = TRUE)
+#ggsave("../figures/prob1_quantiles.pdf", plot = plot.quantiles, device = NULL, path = NULL,
+#       scale = 1, width = 5.5, height = 4*2, units = "in",
+#     dpi = 300, limitsize = TRUE)
 
 
 #98% intervals: 
@@ -313,19 +354,23 @@ cells3 = ggplot(data = cells.quantiles2[1:l,]) +
   geom_line(aes(y = lower, x = L_df$t[1:l]), col = 'black')+
   geom_line(aes(y = upper, x = L_df$t[1:l]), col = 'black')+
   geom_line(data = L_cells_df[1:l,], aes(y = L, x = t), col = 'red' )+
-  ggtitle("Cells L-function with Poisson RF 0.01 and 0.99 quantiles") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line(), legend.position = "none") +
+  ggtitle("Cells L-function with Poisson RF quantiles") +
   xlab("t")+
-  ylab("L") +
-  theme(plot.title = element_text(hjust = 0.5))
+  ylab("L")
 
 redwood3 = ggplot(data = redwood.quantiles2[1:l,]) +
   geom_line(aes(y = lower, x = L_df$t[1:l]), col = 'black')+
   geom_line(aes(y = upper, x = L_df$t[1:l]), col = 'black')+
   geom_line(data = L_redwood_df[1:l,], aes(y = L, x = t), col = 'red' )+
-  ggtitle("Redwood L-function with Poisson RF 0.01 and 0.99 quantiles") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.line = element_line(), legend.position = "none") +
+  ggtitle("Redwood L-function with Poisson RF quantiles") +
   xlab("t")+
-  ylab("L") +
-  theme(plot.title = element_text(hjust = 0.5))
+  ylab("L")
 
 plot.quantiles2 = grid.arrange(grobs = list(cells3, redwood3), ncol = 1)
 
