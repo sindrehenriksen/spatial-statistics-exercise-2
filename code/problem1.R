@@ -22,10 +22,10 @@ library(RColorBrewer)
 
 #Data from web page 
 #Not all on the same form as above..
-cells = as.list(read.table('../data_files/cells.dat', col.names = c('x', 'y')))
-redwood = as.list(read.table('../data_files/redwood.dat', col.names = c('x', 'y')))
+cells = as.list(read.table('../data/cells.dat', col.names = c('x', 'y')))
+redwood = as.list(read.table('../data/redwood.dat', col.names = c('x', 'y')))
 #pines was on a different form..
-pines = ppinit('../data_files/pines.dat')
+pines = ppinit('../data/pines.dat')
 ###############################################################
 ###############################################################
 #a)
@@ -36,7 +36,9 @@ cells_df = data.frame(x = cells$x, y = cells$y)
 ggplot(data = cells_df, aes(x=x, y=y)) + 
   geom_point() + 
   ggtitle("Cells data") +
+  theme_bw() +
   theme(plot.title = element_text(hjust = 0.5))
+
 
 #ggsave("../figures/prob1_cells_points.pdf", plot = last_plot(), device = NULL, path = NULL,
 #       scale = 1, width = 4, height = 4, units = "in",
@@ -48,6 +50,7 @@ redwood_df = data.frame(x = redwood$x, y = redwood$y)
 ggplot(data = redwood_df, aes(x=x, y=y)) + 
   geom_point() + 
   ggtitle("Redwood data") +
+  theme_bw() +
   theme(plot.title = element_text(hjust = 0.5))
 
 #ggsave("../figures/prob1_redwood_points.pdf", plot = last_plot(), device = NULL, path = NULL,
@@ -60,6 +63,7 @@ pines_df = data.frame(x = pines$x, y = pines$y)
 ggplot(data = pines_df, aes(x=x, y=y)) + 
   geom_point() + 
   ggtitle("Pines data") +
+  theme_bw() +
   theme(plot.title = element_text(hjust = 0.5))
 
 #ggsave("../figures/prob1_pines_points.pdf", plot = last_plot(), device = NULL, path = NULL,
