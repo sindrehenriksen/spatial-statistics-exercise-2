@@ -82,4 +82,4 @@ d["pines"] = posterior_intensity + data$pines
 posterior_mean_plot = ggplot(data=d, aes(x, y)) +
   geom_raster(aes(fill=pines)) + fill + theme
 ggsave("../figures/p2_posterior_mean.pdf", plot=posterior_mean_plot,
-       width=5, height=4, units="in", dpi=300)
+       width=4.5, height=3.5, units="in", dpi=300)
