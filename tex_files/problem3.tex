@@ -2,7 +2,7 @@
 \label{sec:problem3}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In this exercise we consider the Neuman-Scott (Mother-Child) event RF model. Using this model the mother-model has a stationary Poisson RF with intensity $\lambda_M$. There exists $k^M$ mothers, and for each mother there exist a number of children, $k^c$, distributed according to a pdf $p(k^c)$ around the mother position $\vect{x}_j^M$, which is positionally distributed according to the conditional pdf $p(\vect{x} \given \vect{x}_j^M)$. The child position is then accepted to ensure that $\vect{x} \in \textrm{D}$. The set of samples generated from a Neuman-Scott event RF  is represented by
-$\mathbb{X}_\textrm{D}^{NS}:\{\vect{x}_1,\vect{x}_2,...,\vect{x}_{k_\textrm{D}}\}:\{\vect{x}_{ji};j=1,2,...,k_\textrm{D}^M:i = 1,2,...,k_\textrm{D}^c\};\vect{x}_j,\vect{x}_{ji}\in D$ with the event count $k_\textrm{D} = \sum_j k_{\textrm{D}_j}^c$. The samples is generated from a sequential simulation algorithm given by
+$\mathbb{X}_\textrm{D}^{NS}:\{\vect{x}_1,\vect{x}_2,...,\vect{x}_{k_\textrm{D}}\}:\{\vect{x}_{ji};j=1,2,...,k_\textrm{D}^M:i = 1,2,...,k_\textrm{D}^c\};\vect{x}_j,\vect{x}_{ji}\in D$ with the event count $k_\textrm{D} = \sum_j k_{\textrm{D}_j}^c$. The samples is generated from a sequential simulation given by the Algorithm \ref{alg:SSNS}.
 
 \begin{algorithm}[H]
 \SetAlgoLined
@@ -16,10 +16,14 @@ $k^c \sim p(k^c)$\;
 \For{$i = 1,2,...,k^c$}{
 Generate:\;
 $\vect{x}^p\sim \phi_2(\vect{x};\vect{x}_j,\sigma_c^2\matr{I}_2)$\;
-\eIf{cond1}{
+\If{$[\vect{x}^p \in \textrm{D}]$}{
+$k = k + 1$\;
+$\vect{x}_k^s = \vect{x}^p$\;
 }
 }
 }
+$k_\textrm{D}^s = k$\;
+$\mathbb{X}_\textrm{D}^{NS_s}:\{\vect{x}_1^s,\vect{x}_2^s,...,\vect{x}_{k_\textrm{D}^s}^s \sim p(\vect{x}_1,\vect{x}_2,...,\vect{x}_{k_\textrm{D}}$\;
  \caption{Sequential Simulation - Neuman-Scott Event RF}
  \label{alg:SSNS}
 \end{algorithm}
@@ -33,9 +37,10 @@ $\vect{x}^p\sim \phi_2(\vect{x};\vect{x}_j,\sigma_c^2\matr{I}_2)$\;
 %          \end{array}
 %     \label{eq:neumanscott}
 % \end{equation}
-From this we can see that the child position model is given by $\vect{x} \sim \Phi(\textrm{D};\vect{x}_j^M, \sigma_c^2\matr{I}_2)$. Then the model parameters are $\vect{\theta}_{pNS} = \left[\lambda_M,\sigma_c^2,p(\cdot)\right]$, where $\lambda_M$ is the intensity of the number of mothers, $\sigma_c^2$ is the deviation of the distance from a child to its mother, and $p(\cdot)$ is the distribution of the number of children around a mother.
 
-To find the parameter $\lambda_M$ a cluster analysis is performed. We ran a gap statistic method for kmeans on the redwood tree data to determine the number of clusters or mothers. The result of which is shown in Figure \ref{fig:numb_clust}, giving $\lambda_M = 7$.
+The child position model is generated from $\vect{x} \sim \phi_2(\textrm{D};\vect{x}_j^M, \sigma_c^2\matr{I}_2)$, a Gaussian distribution with mean $\vect{x_j^M}$, the mother position, and a intercluster variance $\sigma_c^2$. The model parameters are $\vect{\theta}_{pNS} = \left[\lambda_M,\sigma_c^2,p(\cdot)\right]$, where $\lambda_M$ is the intensity of the number of mothers, $\sigma_c^2$ is the deviation of the distance from a child to its mother, and $p(\cdot)$ is the distribution of the number of children around a mother.
+
+To find the parameter $\lambda_M$ a cluster analysis is performed, using a gap statistic method for kmeans on the redwood tree data. This is to determine the optimal number of clusters or mothers. The result of which is shown in Figure \ref{fig:numb_clust}, giving $\lambda_M = 7$.
 
 \begin{figure}
     \centering
@@ -44,7 +49,7 @@ To find the parameter $\lambda_M$ a cluster analysis is performed. We ran a gap 
     \label{fig:numb_clust}
 \end{figure}
 
-To further analyze the redwood tree data a \textit{kmeans}-clustering is run to partition the data points as children in the $7$ clusters (mothers) found previously. The results are shown in Figure \ref{fig:cluster_part}. 
+To further analyze the redwood tree data a \textit{kmeans}-clustering is run to partition the data points as children in the $7$ clusters (mothers), found previously. The results are shown in Figure \ref{fig:cluster_part}. 
 
 \begin{figure}
     \centering
@@ -53,9 +58,9 @@ To further analyze the redwood tree data a \textit{kmeans}-clustering is run to 
     \label{fig:cluster_part}
 \end{figure}
 
-The distribution of number of children in a cluster, $p(\cdot)$, is chosen to be a binomial distribution. The maximum number of children in a cluster, is the number of data points in the redwood data $k_D$, and the probability of a child being child to the mother $k_j^M;j=1,2,...k^M$ is chosen to be $p(k_j^c \given k_j^M) = 1/k_j^M$. By this the number of children in a cluster is distributed as $k_j^c \sim \bin(k_D,1/k_j^M)$. For the positional distribution around the mother the parameter $\sigma_c^2$ is needed. This is given by the total sum of squares within a cluster $TSS; j\in 1,2,...,k^M$ and the number of children in a cluster $k_j^c$, s.t. $\sigma_c^2 = \mathrm{mean}(TSS/k_j^c)$.
+The distribution of number of children in a cluster, $p(\cdot)$, is chosen to be a binomial distribution. The maximum number of children in a cluster is the number of data points in the redwood data $k_D$, and the probability of a child being child to the mother $k_j^M;j=1,2,...k^M$ is chosen to be $p(k_j^c \given k_j^M) = 1/k_j^M$. By this the number of children in a cluster is distributed as $k_j^c \sim \bin(k_D,1/k_j^M)$. For the positional distribution around the mother the parameter $\sigma_c^2$ is needed. This is given by the total sum of squares within a cluster $TSS; j\in 1,2,...,k^M$ and the number of children in a cluster $k_j^c$, s.t. $\sigma_c^2 = \mathrm{mean}(TSS/k_j^c)$.
 
-Now we have all the model parameters. Next a simulation is run to find one realization of the Neuman-Scott event RF, shown in Figure \ref{fig:cluster_event_rf}.
+By the cluster analysis the model parameters was set to be $\vect{\Theta}_{pNS} = [\lamda_M = $. Next a simulation is run to find one realization of the Neuman-Scott event RF, shown in Figure \ref{fig:cluster_event_rf}.
 
 \begin{figure}
     \centering
