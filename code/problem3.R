@@ -31,7 +31,7 @@ redwood.opti.cluster.plot <- nb + theme_minimal() +
 redwood.opti.cluster.plot
 
 ggsave("../figures/numb_clusters.pdf", plot = redwood.opti.cluster.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 4, units = "in",
+       scale = 1, width = 5, height = 3, units = "in",
        dpi = 300, limitsize = TRUE)
 # partitioning clusters k-medoids
 km.res <- kmeans(redwood_df, 7, nstart = 25)
@@ -43,8 +43,9 @@ redwood.cluster.plot <-fviz_cluster(km.res, data = redwood_df,
                                     ggtheme = theme_bw())
 redwood.cluster.plot<- redwood.cluster.plot + theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
 # save plot
+redwood.cluster.plot
 ggsave("../figures/redwood_cluster_partitioning.pdf", plot = redwood.cluster.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 4, units = "in",
+       scale = 1, width = 5, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
 
 redwood.cluster <- redwood.cluster.plot$data
@@ -82,7 +83,7 @@ neuman_scott <- function(lambda_c,sigma_c,lambda_m){
   }
   return(data.frame(x = x[1:k],y = y[1:k],cluster=cluster[1:k]))
 }
-
+set.seed(31)
 x.ns<-neuman_scott(lambda_c,sigma_c,7)
 cluster.event.plot <- ggplot(data = x.ns,aes(x=x, y=y)) + 
   geom_point(aes(colour = factor(cluster))) +
@@ -95,7 +96,7 @@ cluster.event.plot <- ggplot(data = x.ns,aes(x=x, y=y)) +
   ylim(0, 1)
 cluster.event.plot
 ggsave("../figures/cluster_event_rf.pdf", plot = cluster.event.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 4, units = "in",
+       scale = 1, width = 5, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
 
 
@@ -103,9 +104,11 @@ set.seed(15)
 x.ns1 <- neuman_scott(lambda_c, sigma_c,7)
 rel.cluster.plot1 <- ggplot(data = x.ns1,aes(x=x, y=y)) + 
   geom_point() +
-  ggtitle("Realization 1") +
+  ggtitle("Realization") +
   theme_bw()+
-  theme(plot.title = element_text(hjust = 0.5))+
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text = element_blank(),
+        axis.title = element_blank())+
   xlim(0, 1)+
   ylim(0, 1)
 rel.cluster.plot1
@@ -114,9 +117,11 @@ set.seed(5)
 x.ns2 <- neuman_scott(lambda_c, sigma_c,7)
 rel.cluster.plot2 <- ggplot(data = x.ns2,aes(x=x, y=y)) + 
   geom_point() +
-  ggtitle("Realization 2") +
+  ggtitle("Realization") +
   theme_bw()+
-  theme(plot.title = element_text(hjust = 0.5))+
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text = element_blank(),
+        axis.title = element_blank())+
   xlim(0, 1)+
   ylim(0, 1)
 
@@ -126,9 +131,11 @@ set.seed(7)
 x.ns3 <- neuman_scott(lambda_c, sigma_c,7)
 rel.cluster.plot3 <- ggplot(data = x.ns3,aes(x=x, y=y)) + 
   geom_point() +
-  ggtitle("Realization 3") +
+  ggtitle("Realization") +
   theme_bw()+
-  theme(plot.title = element_text(hjust = 0.5))+
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text = element_blank(),
+        axis.title = element_blank())+
   xlim(0, 1)+
   ylim(0, 1)
 rel.cluster.plot3
@@ -137,7 +144,9 @@ data.cluster.plot <- ggplot(data = redwood_df,aes(x=x,y=y)) +
   geom_point() +
   ggtitle("Redwood data") +
   theme_bw()+
-  theme(plot.title = element_text(hjust = 0.5))+
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text = element_blank(),
+        axis.title = element_blank())+
   xlim(0, 1)+
   ylim(0, 1)
 data.cluster.plot
@@ -148,7 +157,7 @@ rel.cluster.grid <- grid.arrange(
   data.cluster.plot
 )
 ggsave("../figures/cluster_rel.pdf", plot = rel.cluster.grid, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 4, units = "in",
+       scale = 1, width = 5, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
 # -----------------------------------------------------------------------------
 # Monte Carlo test
@@ -207,7 +216,7 @@ ns1.plot = ggplot(long_L,
 
 ns1.plot
 ggsave("../figures/gen_ns_l.pdf", plot = ns1.plot, device = NULL, path = NULL,
-       scale = 1, width = 8, height = 4, units = "in",
+       scale = 1, width = 5, height = 8/3, units = "in",
        dpi = 300, limitsize = TRUE)
 
 ns2.plot = ggplot(data = ns.quantiles) +
@@ -222,7 +231,7 @@ ns2.plot = ggplot(data = ns.quantiles) +
 ns2.plot
 
 ggsave("../figures/ns_quant1.pdf", plot = ns2.plot, device = NULL, path = NULL,
-       scale = 1, width = 8, height = 4, units = "in",
+       scale = 1, width = 5, height = 8/3, units = "in",
        dpi = 300, limitsize = TRUE)
 
 t_max = 0.25
@@ -239,5 +248,5 @@ ns3.plot = ggplot(data = ns.quantiles2[1:l,]) +
 ns3.plot
 
 ggsave("../figures/ns_quant2.pdf", plot = ns3.plot, device = NULL, path = NULL,
-       scale = 1, width = 8, height = 4, units = "in",
+       scale = 1, width = 5, height = 8/3, units = "in",
        dpi = 300, limitsize = TRUE)
