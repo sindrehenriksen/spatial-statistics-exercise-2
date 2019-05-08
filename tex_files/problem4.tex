@@ -2,15 +2,16 @@
 \label{sec:problem4}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-We use the biological cell data and want to model a repulsive event RF with a strauss model. This model is on conditional form given the event count $k_D = k$ we have the realizations given by Equation \ref{eq:straureal}. 
+On the biological cell data we want to model a repulsive event RF with a Single-site McMC simulation of a Strauss Event RF. This model is specified on conditional form, given the event count $k_D = k$, realizations can be found by
+%
 \begin{equation}
     \begin{array}{rcl}
         \left[\matr{X}_D^S \given k_D = k\right] & \sim & p(\vect{x}_1,\vect{x}_2,...,\vect{x}_k \given k_D = k) \\
          & = & \mathrm{const} \times \prod\limits_{i,j\in \{1,2,...k\}} exp\{-\phi(\vect{x}_i-\vect{x}_j)\}
-    \end{array}
+    \end{array}.
     \label{eq:straureal}
 \end{equation}
-
+%
 Then let the distance be $\tau_{ij} = |\vect{\tau}_{ij}| \in \R_\oplus; \vect{\tau}_{ij} = \vect{x}_i - \vect{x}_j$, where $\phi(\tau)$ is given by equation 
 \begin{equation}
     \phi(\tau) = \begin{cases}
