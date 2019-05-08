@@ -88,7 +88,7 @@ repulsive.event.plot<-ggplot(repulsive.event.rf$df) +
   theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
 repulsive.event.plot
 ggsave("../figures/repulsive_event_rf.pdf", plot = repulsive.event.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 5.5, units = "in",
+       scale = 1, width = 5.5, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
 
 ggplot(enframe(repulsive.event.rf$accep.prob))+
@@ -103,11 +103,11 @@ repulsive.trace.plot<-ggplot(enframe(repulsive.event.rf$trace.dist)) +
   ggtitle("Trace plot of minimum distance") + 
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5), legend.position = "none",
-        axis.line = element_line(),axis.title.x = element_blank() )+ 
+        axis.line = element_line(),axis.title.x = element_blank())+ 
   scale_y_continuous(name = "minimum distance")
 repulsive.trace.plot
 ggsave("../figures/repulsive_trace_rf.pdf", plot = repulsive.trace.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 5.5, units = "in",
+       scale = 1, width = 5.5, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
 
 ggplot(repulsive.event.rf$df) + 
@@ -128,7 +128,7 @@ for (i in seq(1,num.samps)){
   sample.s.x[,i] = temp.sample.repulsive$df$x
   sample.s.y[,i] = temp.sample.repulsive$df$y
   temp.sample.repulsive.list = as.list(temp.sample.repulsive$df[1:2])
-  temp.L.s = Kfn(temp.sample.repulsive.list, fs = 1)
+  temp.L.s = Kfn(pp = temp.sample.repulsive.list, fs = 1)
   L.samps.s.t[,i] = temp.L.s$x
   L.samps.s.L[,i] = temp.L.s$y
 }

@@ -25,11 +25,13 @@ ggplot(data = redwood_df, aes(x=x, y=y)) +
 nb <-fviz_nbclust(redwood_df, kmeans,
              method = "gap_stat")
 
-redwood.opti.cluster.plot <- nb + theme_minimal()
+redwood.opti.cluster.plot <- nb + theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none",
+        axis.line = element_line())
 redwood.opti.cluster.plot
 
 ggsave("../figures/numb_clusters.pdf", plot = redwood.opti.cluster.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 5.5, units = "in",
+       scale = 1, width = 5.5, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
 # partitioning clusters k-medoids
 km.res <- kmeans(redwood_df, 7, nstart = 25)
@@ -38,11 +40,11 @@ redwood.cluster.plot <-fviz_cluster(km.res, data = redwood_df,
                                     palette = "Set1",
                                     stand = FALSE,
                                     geom = "point",
-                                    ggtheme = theme_minimal())
-redwood.cluster.plot
+                                    ggtheme = theme_bw())
+redwood.cluster.plot + theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
 # save plot
 ggsave("../figures/redwood_cluster_partitioning.pdf", plot = redwood.cluster.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 5.5, units = "in",
+       scale = 1, width = 5.5, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
 
 redwood.cluster <- redwood.cluster.plot$data
@@ -86,16 +88,68 @@ cluster.event.plot <- ggplot(data = x.ns,aes(x=x, y=y)) +
   geom_point(aes(colour = factor(cluster))) +
   scale_colour_manual(values=rep(cbPalette, length = length(x.ns$x)))+
   ggtitle("Clustered event RF") +
+  theme_bw()+
   theme(plot.title = element_text(hjust = 0.5))+
   labs(colour = "Mother")+
-  theme_minimal()+
   xlim(0, 1)+
   ylim(0, 1)
 cluster.event.plot
 ggsave("../figures/cluster_event_rf.pdf", plot = cluster.event.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 5.5, units = "in",
+       scale = 1, width = 5.5, height = 4, units = "in",
        dpi = 300, limitsize = TRUE)
 
+
+set.seed(15)
+x.ns1 <- neuman_scott(lambda_c, sigma_c,7)
+rel.cluster.plot1 <- ggplot(data = x.ns1,aes(x=x, y=y)) + 
+  geom_point() +
+  ggtitle("Realization 1") +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  xlim(0, 1)+
+  ylim(0, 1)
+rel.cluster.plot1
+
+set.seed(5)
+x.ns2 <- neuman_scott(lambda_c, sigma_c,7)
+rel.cluster.plot2 <- ggplot(data = x.ns2,aes(x=x, y=y)) + 
+  geom_point() +
+  ggtitle("Realization 2") +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  xlim(0, 1)+
+  ylim(0, 1)
+
+rel.cluster.plot2
+
+set.seed(7)
+x.ns3 <- neuman_scott(lambda_c, sigma_c,7)
+rel.cluster.plot3 <- ggplot(data = x.ns3,aes(x=x, y=y)) + 
+  geom_point() +
+  ggtitle("Realization 3") +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  xlim(0, 1)+
+  ylim(0, 1)
+rel.cluster.plot3
+
+data.cluster.plot <- ggplot(data = redwood_df,aes(x=x,y=y)) + 
+  geom_point() +
+  ggtitle("Redwood data") +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  xlim(0, 1)+
+  ylim(0, 1)
+data.cluster.plot
+rel.cluster.grid <- grid.arrange(
+  rel.cluster.plot1,
+  rel.cluster.plot2,
+  rel.cluster.plot3,
+  data.cluster.plot
+)
+ggsave("../figures/cluster_rel.pdf", plot = rel.cluster.grid, device = NULL, path = NULL,
+       scale = 1, width = 5.5, height = 4, units = "in",
+       dpi = 300, limitsize = TRUE)
 # -----------------------------------------------------------------------------
 # Monte Carlo test
 set.seed(2)
