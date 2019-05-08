@@ -41,7 +41,7 @@ redwood.cluster.plot <-fviz_cluster(km.res, data = redwood_df,
                                     stand = FALSE,
                                     geom = "point",
                                     ggtheme = theme_bw())
-redwood.cluster.plot + theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
+redwood.cluster.plot<- redwood.cluster.plot + theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
 # save plot
 ggsave("../figures/redwood_cluster_partitioning.pdf", plot = redwood.cluster.plot, device = NULL, path = NULL,
        scale = 1, width = 5.5, height = 4, units = "in",
