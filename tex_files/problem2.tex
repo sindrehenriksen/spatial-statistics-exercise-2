@@ -8,7 +8,7 @@ The area is discretized into a regular $(30 \times 30)$-grid $L$ with grid unit 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{a)}
-The observations are displayed in \figref{fig:p2_pines}, and the observation probabilities are displayed in \figref{fig:p2_alpha}. More trees are observed as $x$ and $y$ increase, but the observation probabilities also increase in the same direction. So the random field might truly be stationary.
+The observations are displayed in \figref{fig:p2_pines}, and the observation probabilities are displayed in \figref{fig:p2_alpha}. More trees are observed as $x$ and $y$ increase, but the observation probabilities also increase in the same direction. So the random field might be stationary.
 
 \begin{figure}
     \centering
@@ -29,7 +29,7 @@ Let $\vect{k}$ be the vector of the true number of pine trees per grid node, suc
 The number of observed pine trees in node $i$, $d_i$, is binomial with probability of success $\alpha_i$ and number of trials $k_i$. Assuming that the observations given the true number of pine trees are spatially uncorrelated from one grid unit to another, the likelihood $\lik$ for the observations is
 %
 \begin{equation*}
-    \lik(\vect{k} \given{\vect{d}}) = \prod_{i=1}^n \binom{k_i}{d_i} \alpha_i^{d_i} (1 - \alpha_i)^{k_i - d_i} \, ,
+    \lik(\vect{k} \given{\vect{d}}) = \prod_{i=1}^n \binom{k_i}{d_i} \alpha_i^{d_i} (1 - \alpha_i)^{k_i - d_i}, \quad \vect{k} \geq \vect{d}, \quad \vect{k} \in \nats_\oplus^n \, ,
 \end{equation*}
 %
 with $n=900$, i.e. the number of grid nodes.
@@ -42,7 +42,6 @@ We assume a priori that the distribution of pine trees is according to a station
     \prob(\vect{k} \given \lambda_k) = \prod_{i=1}^n \prob(k_i \given \lambda_k) = \prod_{i=1}^n \frac{(100\lambda_k)^{k_i} e^{-100\lambda_k}}{k_i!} = \frac{(100\lambda_k)^{\sum_{i=1}^n k_i} e^{-90000\lambda_k}}{\prod_{i=1}^n k_i!} \, .
 \end{equation*}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{c)}
 We wish to estimate the intensity $\lambda_k$ based on the observations and observation probabilities. An estimate of the total number of trees on the grid i $\sum_{i=1}^n d_i / \alpha_i$, and so an estimate of $\lambda_k$ is
@@ -51,9 +50,9 @@ We wish to estimate the intensity $\lambda_k$ based on the observations and obse
     \hat{\lambda_k} = \frac{\sum_{i=1}^n d_i / \alpha_i}{n} \approx 0.01016 \, .
 \end{equation*}
 %
-There are (at least) two equivalent ways to simulate event counts and approximate event locations from the Poisson random field on $L$ with intensity $\hat{\lambda}$. One is to simulate from a Poisson distribution with parameter $|L|\hat{\lambda} = 90000\hat{\lambda}$ to get a total count $m$ and uniformly distribute the $m$ points over the grid. The other way is to simulate 900 times from a Poisson distribution with intensity $100\hat{\lambda}$ to get a vector of counts $\vect{m}$ corresponding to the 900 grid nodes. These are equivalent since we assume the field is stationary.
+There are (at least) two equivalent ways to simulate event counts and approximate event locations from the Poisson random field on $L$ with intensity $\hat{\lambda}$. One is to simulate from a Poisson distribution with parameter $|L|\hat{\lambda} = 90000\hat{\lambda}$ to get a total count $m$ and uniformly distribute the $m$ points over the grid. The other way is to simulate 900 times from a Poisson distribution with intensity $100\hat{\lambda}$ to get a vector of counts $\vect{m}$ corresponding to the 900 grid nodes. The methods are equivalent since we assume the field is stationary.
 
-We do the latter for simplicity (when programming). The results are displayed in Figure~\ref{fig:p2_prior_sims}.
+We chose the latter method for simplicity (when programming). The results are displayed in Figure~\ref{fig:p2_prior_sims}.
 
 \begin{figure}
     \centering
@@ -69,14 +68,14 @@ The posterior discretized  event-count model is given by
 \begin{equation}
 \label{eq:p2_posterior}
 \begin{split}
-    \prob(\vect{k} \given \vect{d}, \lambda_k) &\propto \prob(\vect{d} \given \vect{k}) \prob(k \given \lambda_k) \\
+    \prob(\vect{k} \given \vect{d}; \lambda_k) &\propto \prob(\vect{d} \given \vect{k}) \prob(k; \lambda_k) \\
     &= \prod_{i=1}^n \frac{k_i!}{(k_i - d_i)!d_i!} \alpha_i^{d_i} (1 - \alpha_i)^{k_i - d_i} \prod_{i=1}^n \frac{(100\lambda_k)^{k_i} e^{-100\lambda_k}}{k_i!} \\
     &\propto \prod_{i=1}^n \frac{(100\lambda_k)^{k_i} e^{-100\lambda_k}}{(k_i - d_i)!} \alpha_i^{d_i} (1 - \alpha_i)^{k_i - d_i} \cdot \frac{(100\lambda_k)^{-d_i} e^{100\lambda_k\alpha_i}}{\alpha_i^{d_i}} \\
     &= \prod_{i=1}^n \frac{[100\lambda_k(1-\alpha_i)]^{k_i-d_i} e^{-[100\lambda_k(1-\alpha_i)]}}{(k_i-d_i)!} \, .
 \end{split}
 \end{equation}
 %
-By independence, the density of $k_i$, $i = 1, \dots, 900$, is given by removing the product symbol in the last line of \eqref{eq:p2_posterior}. I.e. $(k_i \given d_i, \lambda_k) \sim \Pois(k_i - d_i \ssep 100\lambda_k[1-\alpha_i])$. This makes sense intuitively; $\E(k_i - d_i \given d_i, \lambda_k) = 100\lambda_k(1-\alpha_i) = \E(k_i) - \alpha_i\E(k_i)$, i.e. the expected difference between $k_i$ and $d_i$ is just the expected number of pine trees, less the observation probability multiplied by the expected number of trees. Thus the posterior model is a Poisson RF model.
+By independence, the density of $k_i$, $i = 1, \dots, 900$, is given by removing the product symbol in the last line of \eqref{eq:p2_posterior}. I.e. $(k_i \given d_i; \lambda_k) \sim \pois(k_i - d_i \ssep 100\lambda_k[1-\alpha_i])$. This makes sense intuitively; $\E(k_i - d_i \given d_i; \lambda_k) = 100\lambda_k(1-\alpha_i) = \E(k_i) - \alpha_i\E(k_i)$, i.e. the expected difference between $k_i$ and $d_i$ is just the expected number of pine trees, less the observation probability multiplied by the expected number of trees. Thus the posterior model is a Poisson RF model.
 
 10 realizations of the associated approximate event-location model are generated in a similar way as in c). We simulate from the 900 Poisson distributions with intensities $100\lambda_k(1-\alpha_i)$ and add $d_i$, $i = 1, \dots, 900$. The results are illustrated in Figure~\ref{fig:p2_posterior_sims}.
 
