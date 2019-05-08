@@ -6,19 +6,19 @@ $\mathbb{X}_\textrm{D}^{NS}:\{\vect{x}_1,\vect{x}_2,...,\vect{x}_{k_\textrm{D}}\
 
 \begin{algorithm}[H]
 \SetAlgoLined
-initiate:\;
-$k = 0$\;
-$k^M \sim p(k) = Poi(k;\lambda_M) = \frac{[\lambda_M]^k}{k!}exp\{-\lambda_M\};k\in\mathbb{N}_\oplus$\;
+initiate:\\
+$k = 0$\\
+$k^M \sim p(k) = Poi(k;\lambda_M) = \frac{[\lambda_M]^k}{k!}exp\{-\lambda_M\};k\in\mathbb{N}_\oplus$\\
 \For{$j = 1,2,...,k^M$}{
-Generate:\;
-$\vect{x_j}\sim Uni[\textrm{D}]$\;
-$k^c \sim p(k^c)$\;
+Generate:\\
+$\vect{x_j}\sim Uni[\textrm{D}]$\\
+$k^c \sim p(k^c)$\\
 \For{$i = 1,2,...,k^c$}{
-Generate:\;
-$\vect{x}^p\sim \phi_2(\vect{x};\vect{x}_j,\sigma_c^2\matr{I}_2)$\;
+Generate:\\
+$\vect{x}^p\sim \phi_2(\vect{x};\vect{x}_j,\sigma_c^2\matr{I}_2)$\\
 \If{$[\vect{x}^p \in \textrm{D}]$}{
-$k = k + 1$\;
-$\vect{x}_k^s = \vect{x}^p$\;
+$k = k + 1$\\
+$\vect{x}_k^s = \vect{x}^p$\\
 }
 }
 }
@@ -62,30 +62,37 @@ The distribution of number of children in a cluster, $p(\cdot)$, is chosen to be
 
 By the cluster analysis the model parameters was set to be $\vect{\Theta}_{pNS} = [\lambda_M = 7, \sigma_c^2 = 0.068, \prob(\cdot) = \bin(k_\textrm{D},1/k_j^M)]$. Next a simulation is run to generate one realization of the Neuman-Scott event RF, shown in Figure \ref{fig:cluster_event_rf}.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.95]{figures/cluster_event_rf.pdf}
     \caption{One realization of a sequential simulation of a Neuman-Scott Event RF.}
     \label{fig:cluster_event_rf}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.95]{figures/cluster_rel.pdf}
+    \caption{Three realizations of a Neuman-Scott Event RF and the redwood tree data.}
+    \label{fig:rel_rf}
+\end{figure}
+
 Finally a Monte Carlo test is run on $100$ realizations from the Neuman-Scott event RF. The L-interaction function is calculated using Equation \eqref{eq:L_function} for each realization. The result is presented in Figure \ref{fig:gen_ns_l}.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.65]{figures/gen_ns_l.pdf}
     \caption{L-interaction function of $100$ realizations of a sequential simulation of a Neuman-Scott Event RF. The black lines is the $0.05$ and $0.95$ quantile of the L-interaction function.}
     \label{fig:gen_ns_l}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.65]{figures/ns_quant1.pdf}
     \caption{A comparison between the $0.05$ and $0.95$ quantiles of the L-interaction function from $100$ realizations of a sequential simulation of a Neuman-Scott Event RF, and the L-interaction function of the redwood tree data.}
     \label{fig:ns_quant1}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.65]{figures/ns_quant2.pdf}
     \caption{A comparison between the $0.01$ and $0.99$ quantiles of the L-interaction function from $100$ realizations of a sequential simulation of a Neuman-Scot Event RF, and the L-interaction function of the redwood tree data.}
