@@ -167,7 +167,7 @@ s1.plot = ggplot(long_L,
 
 s1.plot
 ggsave("../figures/gen_strauss_l.pdf", plot = s1.plot, device = NULL, path = NULL,
-       scale = 1, width = 5, height = 8/3, units = "in",
+       scale = 1, width = 5.5, height = 8/3, units = "in",
        dpi = 300, limitsize = TRUE)
 
 s2.plot = ggplot(data = s.quantiles) +
@@ -182,7 +182,7 @@ s2.plot = ggplot(data = s.quantiles) +
 s2.plot
 
 ggsave("../figures/strauss_quant1.pdf", plot = s2.plot, device = NULL, path = NULL,
-       scale = 1, width = 5, height = 8/3, units = "in",
+       scale = 1, width = 5.5, height = 8/3, units = "in",
        dpi = 300, limitsize = TRUE)
 
 t_max = 0.25
@@ -199,7 +199,7 @@ s3.plot = ggplot(data = s.quantiles2[1:l,]) +
 s3.plot
 
 ggsave("../figures/strauss_quant2.pdf", plot = s3.plot, device = NULL, path = NULL,
-       scale = 1, width = 5, height = 8/3, units = "in",
+       scale = 1, width = 5.5, height = 8/3, units = "in",
        dpi = 300, limitsize = TRUE)
 
 

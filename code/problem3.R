@@ -216,7 +216,7 @@ ns1.plot = ggplot(long_L,
 
 ns1.plot
 ggsave("../figures/gen_ns_l.pdf", plot = ns1.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 8/3, units = "in",
+       scale = 1, width = 6, height = 8/3, units = "in",
        dpi = 300, limitsize = TRUE)
 
 ns2.plot = ggplot(data = ns.quantiles) +
@@ -231,7 +231,7 @@ ns2.plot = ggplot(data = ns.quantiles) +
 ns2.plot
 
 ggsave("../figures/ns_quant1.pdf", plot = ns2.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 8/3, units = "in",
+       scale = 1, width = 6, height = 8/3, units = "in",
        dpi = 300, limitsize = TRUE)
 
 t_max = 0.25
@@ -248,5 +248,5 @@ ns3.plot = ggplot(data = ns.quantiles2[1:l,]) +
 ns3.plot
 
 ggsave("../figures/ns_quant2.pdf", plot = ns3.plot, device = NULL, path = NULL,
-       scale = 1, width = 5.5, height = 8/3, units = "in",
+       scale = 1, width = 6, height = 8/3, units = "in",
        dpi = 300, limitsize = TRUE)
