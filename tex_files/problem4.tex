@@ -4,6 +4,7 @@
 
 On the biological cell data we want to model a repulsive event RF with a Single-site McMC simulation of a Strauss Event RF. This model is specified on conditional form, given the event count $k_D = k$, realizations can be found by
 %
+
 \begin{equation}
     \begin{array}{rcl}
         \left[\mathbb{X}_\textrm{D}^S \given k_\textrm{D} = k\right] & \sim & p(\vect{x}_1,\vect{x}_2,...,\vect{x}_k \given k_\textrm{D} = k) \\
@@ -12,6 +13,7 @@ On the biological cell data we want to model a repulsive event RF with a Single-
     \label{eq:straureal}
 \end{equation}
 %
+
 Then let the distance be $\tau_{ij} = |\vect{\tau}_{ij}| \in \reals_\oplus; \vect{\tau}_{ij} = \vect{x}_i - \vect{x}_j$, where $\phi(\tau)$ is given by equation 
 \begin{equation}
     \phi(\tau) = \begin{cases}
@@ -22,37 +24,57 @@ Then let the distance be $\tau_{ij} = |\vect{\tau}_{ij}| \in \reals_\oplus; \vec
 \end{equation}
 where $\tau_0 \in R_\oplus$ and $\phi_0,\phi_1 \in R_+$. This gives the model parameters for the Strauss-model $\vect{\theta} _{pS\given k} = [\tau_0,\phi_0,\phi_1]$. The minimum distance between the points in the cells data, $\tau_0$, is calculated by $\tau_0 = \min\limits_{\{i,j\in k;i\neq j\}} |\vect{x}_i-\vect{x}_j|$. The other parameters are chosen to fit the quantiles of L-interaction function of the realizations from the Strauss Event RF to the L-interaction function of the cells data. An initial guess on the model parameter is done, then compared and changed until a fit is made. This yields the parameters  $\phi_0 = 7$ and $\phi_1 = 90$ and the minimum distance was calculated to be $\tau_0 = 0.0836$. From this knowledge realizations can be generated, and one is displayed in Figure \ref{fig:repulsive_event_rf}. The comparison between the L-interaction functions of the quantiles of the cell data and the realizations from the Strauss Event RF is shown in Figure \ref{fig:strauss_quant1} and  Figure \ref{fig:strauss_quant2}. 
 
-\begin{figure}[H]
+
+\begin{algorithm}[H]
+\SetAlgoLined
+initiate:\\
+$\mathbb{X}_\textrm{D}^0\{\vect{x}_1^0,\vect{x}_2^0,...,\vect{x}_k^0\}; s.t. p(\vect{x}_1^0,\vect{x}_2^0,...,\vect{x}_k^0\given k_\textrm{D} = k)>0$\\
+\For{$j = 1,2,...,k^M$}{
+$\mathbb{X}_\textrm{D} = \mathbb{X}_\textrm{D}^{i-1}$\\
+Generate:\\
+$u\sim Uni[1,2,...,k]$\\
+$\vect{x}^p \sim Uni[\textrm{D}]$\\
+$\alpha = min\{1,exp\{-\sum\limits_{{j = 1};{j\neq u}}^k[\phi(\vect{x}^p - \vect{x}_j^i)-\phi(\vect{x}_u^i-\vect{x}_j^i)]\}\}$\\
+\If{$Uni[0,1]< \alpha$}{
+    $\mathbb{X}_\textrm{D}^i:\{\vect{x}_1^i,...,\vect{x}_{u-1}^i,\vect{x}^p,\vect{x}_{u+1}^i,...,\vect{x}_k^i\}$\\
+}
+}
+\caption{Single-site McMC Simulation - Strauss Event RF}
+ \label{alg:SSS}
+\end{algorithm}
+
+
+\begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/repulsive_trace_rf.pdf}
-    \caption{}
+    \includegraphics[scale=0.9]{figures/repulsive_trace_rf.pdf}
+    \caption{Trace plot of the minimum distance between all the points in an the McMC simulation of a Strauss Event RF with model parameters $[\tau_0,\phi_0,\phi_1] = [0.84,7,90]$. The red line is $\tau_0$, the minimum distance in the biological cell data.}
     \label{fig:repulsive_trace}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/repulsive_event_rf.pdf}
+    \includegraphics[scale=0.9]{figures/repulsive_event_rf.pdf}
     \caption{One realization of a Single-site McMC simulation of a Strauss Event RF with model parameters $[\tau_0,\phi_0,\phi_1] = [0.84,7,90]$.}
     \label{fig:repulsive_event_rf}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/gen_strauss_l.pdf}
+    \includegraphics[scale=0.9]{figures/gen_strauss_l.pdf}
     \caption{L-interaction function of $100$ realizations of a Single-site McMC simulation of a Strauss Event RF with model parameters $[\tau_0,\phi_0,\phi_1] = [0.84,7,90]$. The black lines is the $0.05$ and $0.95$ quantile of the L-interaction function.}
     \label{fig:gen_strauss_l}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/strauss_quant1.pdf}
+    \includegraphics[scale=0.9]{figures/strauss_quant1.pdf}
     \caption{A comparison between the $0.05$ and $0.95$ quantiles of the L-interaction function from $100$ realizations of a single-site McMC simulation of a Strauss Event RF with model parameters $[\tau_0,\phi_0,\phi_1] = [0.84,7,90]$, and the L-interaction function of the biological cell data.}
     \label{fig:strauss_quant1}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[scale=0.95]{figures/strauss_quant2.pdf}
+    \includegraphics[scale=0.9]{figures/strauss_quant2.pdf}
     \caption{A comparison between the $0.01$ and $0.99$ quantiles of the L-interaction function from $100$ realizations of a single-site McMC simulation of a Strauss Event RF with model parameters $[\tau_0,\phi_0,\phi_1] = [0.84,7,90]$, and the L-interaction function of the biological cell data.}
     \label{fig:strauss_quant2}
 \end{figure}
