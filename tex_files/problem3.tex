@@ -38,7 +38,7 @@ $\mathbb{X}_\textrm{D}^{NS_s}:\{\vect{x}_1^s,\vect{x}_2^s,...,\vect{x}_{k_\textr
 %     \label{eq:neumanscott}
 % \end{equation}
 
-The child position model is generated from $\vect{x} \sim \phi_2(\textrm{D};\vect{x}_j^M, \sigma_c^2\matr{I}_2)$, a Gaussian distribution with mean $\vect{x_j^M}$, the mother position, and a intercluster variance $\sigma_c^2$. The model parameters are $\vect{\theta}_{pNS} = \left[\lambda_M,\sigma_c^2,p(\cdot)\right]$, where $\lambda_M$ is the intensity of the number of mothers, $\sigma_c^2$ is the deviation of the distance from a child to its mother, and $p(\cdot)$ is the distribution of the number of children around a mother.
+The child position model is generated from $\vect{x} \sim \phi_2(\textrm{D};\vect{x}_j^M, \sigma_c^2\matr{I}_2)$, a Gaussian distribution with mean $\vect{x}_j^M$, the mother position, and a intercluster variance $\sigma_c^2$. The model parameters are $\vect{\theta}_{pNS} = \left[\lambda_M,\sigma_c^2,p(\cdot)\right]$, where $\lambda_M$ is the intensity of the number of mothers, $\sigma_c^2$ is the deviation of the distance from a child to its mother, and $p(\cdot)$ is the distribution of the number of children around a mother.
 
 To find the parameter $\lambda_M$ a cluster analysis is performed, using a gap statistic method for kmeans on the redwood tree data. This is to determine the optimal number of clusters or mothers. The result of which is shown in Figure \ref{fig:numb_clust}, giving $\lambda_M = 7$.
 
@@ -58,9 +58,9 @@ To further analyze the redwood tree data a \textit{kmeans}-clustering is run to 
     \label{fig:cluster_part}
 \end{figure}
 
-The distribution of number of children in a cluster, $p(\cdot)$, is chosen to be a binomial distribution. The maximum number of children in a cluster is the number of data points in the redwood data $k_D$, and the probability of a child being child to the mother $k_j^M;j=1,2,...k^M$ is chosen to be $p(k_j^c \given k_j^M) = 1/k_j^M$. By this the number of children in a cluster is distributed as $k_j^c \sim \bin(k_D,1/k_j^M)$. For the positional distribution around the mother the parameter $\sigma_c^2$ is needed. This is given by the total sum of squares within a cluster $TSS; j\in 1,2,...,k^M$ and the number of children in a cluster $k_j^c$, s.t. $\sigma_c^2 = \mathrm{mean}(TSS/k_j^c)$.
+The distribution of number of children in a cluster, $p(\cdot)$, is chosen to be a binomial distribution. The maximum number of children in a cluster is the number of data points in the redwood data $k_D$, and the probability of a child being child to the mother $k_j^M;j=1,2,...k^M$ is chosen to be $p(k_j^c \given k_j^M) = 1/k_j^M$. By this the number of children in a cluster is distributed as $k_j^c \sim \bin(k_D,1/k_j^M)$. For the positional distribution around the mother the parameter $\sigma_c^2$ is needed. This is calculated from the total sum of squares within a cluster $TSS; j\in 1,2,...,k^M$ and the number of children in a cluster $k_j^c$, s.t. $\sigma_c^2 = \mathrm{mean}(TSS/k_j^c)$.
 
-By the cluster analysis the model parameters was set to be $\vect{\Theta}_{pNS} = [\lambda_M = 7, \sigma_c^2 = 0.068, \prob(\cdot) = \bin(k_\textrm{D},1/k_j^M)]$. Next a simulation is run to generate one realization of the Neuman-Scott event RF, shown in Figure \ref{fig:cluster_event_rf}.
+By the cluster analysis the model parameters is set to be $\vect{\Theta}_{pNS} = [\lambda_M = 7, \sigma_c^2 = 0.068, \prob(\cdot) = \bin(k_\textrm{D},1/k_j^M)]$. Next simulations is run to generate realizations of the Neuman-Scott event RF. In Figure \ref{fig:cluster_event_rf} one realization is shown with the partition of the events to their respective mothers, and in Figure \ref{fig:rel_rf} three realization is presented with the redwood tree data. Here a clustering effect is definitely present and the intercluster variance, $\sigma_c^2$, seems to fit the data fine. 
 
 \begin{figure}
     \centering

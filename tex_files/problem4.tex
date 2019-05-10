@@ -14,7 +14,7 @@ On the biological cell data we want to model a repulsive event RF with a Single-
 \end{equation}
 %
 
-Then let the distance be $\tau_{ij} = |\vect{\tau}_{ij}| \in \reals_\oplus; \vect{\tau}_{ij} = \vect{x}_i - \vect{x}_j$, where $\phi(\tau)$ is given by equation 
+Then let the distance between points in the domain be $\tau_{ij} = |\vect{\tau}_{ij}| \in \reals_\oplus; \vect{\tau}_{ij} = \vect{x}_i - \vect{x}_j$, where $\phi(\tau)$ is given by equation 
 \begin{equation}
     \phi(\tau) = \begin{cases}
                     \phi_0; & 0 \leq \tau \leq \tau_0\\
@@ -22,8 +22,7 @@ Then let the distance be $\tau_{ij} = |\vect{\tau}_{ij}| \in \reals_\oplus; \vec
                 \end{cases},
     \label{eq:interfunction}
 \end{equation}
-where $\tau_0 \in R_\oplus$ and $\phi_0,\phi_1 \in R_+$. This gives the model parameters for the Strauss-model $\vect{\theta} _{pS\given k} = [\tau_0,\phi_0,\phi_1]$. The minimum distance between the points in the cells data, $\tau_0$, is calculated by $\tau_0 = \min\limits_{\{i,j\in k;i\neq j\}} |\vect{x}_i-\vect{x}_j|$. The other parameters are chosen to fit the quantiles of L-interaction function of the realizations from the Strauss Event RF to the L-interaction function of the cells data. An initial guess on the model parameter is done, then compared and changed until a fit is made. This yields the parameters  $\phi_0 = 7$ and $\phi_1 = 90$ and the minimum distance was calculated to be $\tau_0 = 0.0836$. From this knowledge realizations can be generated, and one is displayed in Figure \ref{fig:repulsive_event_rf}. The comparison between the L-interaction functions of the quantiles of the cell data and the realizations from the Strauss Event RF is shown in Figure \ref{fig:strauss_quant1} and  Figure \ref{fig:strauss_quant2}. 
-
+where $\tau_0 \in R_\oplus$ and $\phi_0,\phi_1 \in R_+$. This gives the model parameters for the Strauss-model $\vect{\theta} _{pS\given k} = [\tau_0,\phi_0,\phi_1]$. The minimum distance between the points in the cells data, $\tau_0$, is calculated by $\tau_0 = \min\limits_{\{i,j\in k;i\neq j\}} |\vect{x}_i-\vect{x}_j|$. The other parameters are chosen to fit L-interaction function of the realizations from the Strauss Event RF to the quantiles of the L-interaction function of the cells data. By Equation \eqref{eq:straureal} and Equation \eqref{eq:interfunction} a Single-site McMC algorithm is made and presented in Algorithm \ref{alg:SSS}. 
 
 \begin{algorithm}[H]
 \SetAlgoLined
@@ -41,7 +40,11 @@ $\alpha = min\{1,exp\{-\sum\limits_{{j = 1};{j\neq u}}^k[\phi(\vect{x}^p - \vect
 }
 \caption{Single-site McMC Simulation - Strauss Event RF}
  \label{alg:SSS}
-\end{algorithm}
+\end{algorithm} 
+
+An initial guess on the model parameter is done, then compared and changed until a fit is made. This yields the parameters  $\phi_0 = 7$ and $\phi_1 = 90$ and the minimum distance was calculated to be $\tau_0 = 0.0836$. Using these parameters and Algorithm \ref{alg:SSS} realizations is generated and a trace plot of the minimum distance between all the generated points in the simulation is presented in Figure \ref{fig:repulsive_trace}. In the trace a convergence towards the minimum distance in the cell data(the red line) is present and expected by the semi-hardcore model. The trace looks pretty bad for a McMC and it seems like the model is exploring little of the domain. Though this might be the case, the fact that a Single-site McMC is used and that the trace is of the minimum distance, its behavior can be explained. The minimum distance might not be update in each iteration, based on the fact that the point looked at is chosen at random. The minimum distance can then end up not being updated for many iterations. In Figure \ref{fig:repulsive_event_rf} one realization of the Strauss event RF is shown, and a repulsive effect seems to be presented.  
+
+The comparison between the L-interaction functions of the quantiles of the cell data and $100$ realizations from the Strauss Event RF is shown in Figure \ref{fig:gen_strauss_l}, Figure \ref{fig:strauss_quant1} and  Figure \ref{fig:strauss_quant2}. 
 
 
 \begin{figure}
