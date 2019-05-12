@@ -62,10 +62,10 @@ straussEventRF <- function(k,model.param){
     if (runif(1)<acceptance.prob[i]){
       xd[u] = try_x
       yd[u] = try_y
-      trace.dist = c(trace.dist, min(dist(data.frame(x=xd,y=yd))))
       x1 = c(x1,xd[1])
       y1 = c(y1,yd[1])
     }
+    trace.dist = c(trace.dist, min(dist(data.frame(x=xd,y=yd))))
   }
   return(list(df = data.frame(x=xd,y=yd,x0 = x0, y0 = y0),accep.prob = acceptance.prob,trace.dist = trace.dist,df2 = data.frame(x = x1,y = y1)))
 }
