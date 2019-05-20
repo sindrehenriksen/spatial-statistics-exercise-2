@@ -2,7 +2,7 @@
 \label{sec:problem4}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-On the biological cell data we want to model a repulsive event RF with a Single-site McMC simulation of a Strauss Event RF. This model is specified on conditional form, given the event count $k_D = k$, realizations can be found by
+On the biological cell data we want to model a repulsive event RF with a Single-site McMC simulation of a Strauss Event RF. This model is specified on conditional form, given the event count $k_\textrm{D} = k$, realizations can be found by
 %
 
 \begin{equation}
@@ -42,9 +42,9 @@ $\alpha = min\{1,exp\{-\sum\limits_{{j = 1};{j\neq u}}^k[\phi(\vect{x}^p - \vect
  \label{alg:SSS}
 \end{algorithm} 
 
-An initial guess on the model parameter is done, then compared and changed until a fit is made. This yields the parameters  $\phi_0 = 7$ and $\phi_1 = 90$ and the minimum distance was calculated to be $\tau_0 = 0.0836$. Using these parameters and Algorithm \ref{alg:SSS} realizations is generated and a trace plot of the minimum distance between all the generated points in the simulation is presented in Figure \ref{fig:repulsive_trace}. In the trace a convergence towards the minimum distance in the cell data(the red line) is present and expected by the semi-hardcore model. The trace looks pretty bad for a McMC and it seems like the model is exploring little of the domain. Though this might be the case, the fact that a Single-site McMC is used and that the trace is of the minimum distance, its behavior can be explained. The minimum distance might not be update in each iteration, based on the fact that the point looked at is chosen at random. The minimum distance can then end up not being updated for many iterations. In Figure \ref{fig:repulsive_event_rf} one realization of the Strauss event RF is shown, and a repulsive effect seems to be presented.  
+An initial guess on the model parameter is done, then compared and changed until a fit is made. This yields the parameters  $\phi_0 = 7$ and $\phi_1 = 90$ and the minimum distance was calculated to be $\tau_0 = 0.0836$. Using these parameters and Algorithm \ref{alg:SSS} realizations is generated and a trace plot of the minimum distance between all the generated points in the simulation is presented in Figure \ref{fig:repulsive_trace}. In the trace a convergence towards the minimum distance in the cell data (the red line) is present and expected by the semi-hardcore model. The trace looks pretty bad for a McMC and it seems like the model is exploring little of the domain. Though this might be the case, the fact that a Single-site McMC is used and that the trace is of the minimum distance, its behavior can be explained. The minimum distance might not be update in each iteration, based on the fact that the point looked at, is chosen at random. The minimum distance can then end up not being updated for many iterations. In Figure \ref{fig:repulsive_event_rf} one realization of the Strauss event RF is shown, and a repulsive effect seems to be presented.  
 
-The comparison between the L-interaction functions of the quantiles of the cell data and $100$ realizations from the Strauss Event RF is shown in Figure \ref{fig:gen_strauss_l}, Figure \ref{fig:strauss_quant1} and  Figure \ref{fig:strauss_quant2}. 
+The comparison between the L-interaction functions of the quantiles of the cell data and $100$ realizations from the Strauss Event RF is shown in Figure \ref{fig:gen_strauss_l}, Figure \ref{fig:strauss_quant1} and Figure \ref{fig:strauss_quant2}. 
 
 
 \begin{figure}
